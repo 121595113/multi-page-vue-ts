@@ -10,9 +10,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
-Vue.use(VueCordova, {
-  optionTestKey: 'optionTestValue'
-})
+Vue.use(VueCordova)
 
 Vue.config.productionTip = false
 
