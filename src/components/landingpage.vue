@@ -17,6 +17,10 @@
       <div class="title">
         <p>How it Works</p>
       </div>
+      <div class="remarks">
+        <p>• This loan can only be used at participating Robinsons Stores.<router-link to="/robinsonsstores"><b>View Robinsons Stores</b></router-link></p>
+        <p>• Look for a Cashalo representative at participating stores to assist you with your Cashacart Loan.</p>
+      </div>
       <div class="process">
         <div class="stepNumber">
           <img src="../assets/images/nb1.png" class="stepImg">
@@ -40,10 +44,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="remarks">
-      <p>• Only support the bill shopping at Robinson's shopping mall.</p>
-      <p>• Please confirm with the counter clerk that your bill can apply for cashalo loan.</p>
     </div>
     <div class="help">
       <span @click="gohelp">Need more help？</span>
@@ -160,6 +160,7 @@ export default {
 .process{
   overflow: hidden;
   position: relative;
+  padding-bottom: 3%;
 }
 .stepNumber{
   float: left;
@@ -200,7 +201,7 @@ export default {
 }
 .stePub h4{
   font-size: rem-calc(32);
-  color: #266bb7;
+  color: #000;
   line-height:rem-calc(32);
 }
 .stePub p{
@@ -211,8 +212,8 @@ export default {
   padding-top: rem-calc(12);
 }
 .remarks{
-  padding: 0 4% 4% 4%;
-  width: 92%;
+  padding: 0 0 4% 0;
+  width: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -220,7 +221,13 @@ export default {
   color:rgba(0, 0, 0, 0.3);
   font-size:rem-calc(24);
   line-height: rem-calc(36);
-  margin-bottom:rem-calc(8);
+  margin-bottom:rem-calc(24);
+}
+.remarks p b{
+  color:#266BB7;
+  margin-left:rem-calc(8);
+  font-weight: normal;
+  text-decoration: none;
 }
 .help{
   width: 92%;
