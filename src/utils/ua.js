@@ -54,4 +54,4 @@ export const isWeChat = detect(/MicroMessenger/i)
 
 export const iosVersion = getIosVersion()
 
-// export const isNative = detect(/MicroMessenger/i)
+export const isNative = detect(/platform\/(ios|android)/i)
