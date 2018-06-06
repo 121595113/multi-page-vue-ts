@@ -115,12 +115,12 @@ module.exports = vuxLoader.merge(webpackConfig, {
     {
       name: 'duplicate-style'
     },
-    {
-      name: 'i18n',
-      vuxStaticReplace: false,
-      staticReplace: false,
-      extractToFiles: 'src/locales/components.yml',
-      localeList: ['en', 'zh-CN']
-    }
+    // {
+    //   name: 'i18n',
+    //   vuxStaticReplace: false,
+    //   staticReplace: false,
+    //   extractToFiles: 'src/locales/components.yml',
+    //   localeList: ['en', 'zh-CN']
+    // }
   ]
 })
