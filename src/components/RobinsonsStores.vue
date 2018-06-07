@@ -7,34 +7,9 @@
       </div>
     </div>
     <div class="stores-content">
-      <div class="storeslist">
-        <h4>Store Name 1</h4>
-        <p>Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines</p>
-      </div>
-      <div class="storeslist">
-        <h4>Store Name 1</h4>
-        <p>Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines</p>
-      </div>
-      <div class="storeslist">
-        <h4>Store Name 1</h4>
-        <p>Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines</p>
-      </div>
-
-      <div class="storeslist">
-        <h4>Store Name 1</h4>
-        <p>Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines</p>
-      </div>
-      <div class="storeslist">
-        <h4>Store Name 1</h4>
-        <p>Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines</p>
-      </div>
-      <div class="storeslist">
-        <h4>Store Name 1</h4>
-        <p>Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines</p>
-      </div>
-      <div class="storeslist">
-        <h4>Store Name 1</h4>
-        <p>Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines</p>
+      <div class="storeslist" v-for="items in storeslist" :key="items.id">
+        <h4 v-html="items.title"></h4>
+        <p v-html="items.detail"></p>
       </div>
     </div>
   </div>
@@ -56,16 +31,20 @@ export default {
   },
   methods: {
     getUrl () {
-      this.loading = false
-      let list = 10
-      let stores = {
-        'storeName': 'Store Name',
-        'storeDetails': 'Unit 3207, Robinsons Equitable Tower, ADB Avenue corner P. Poveda Drive, Ortigas Center, Pasig City, Philippines'
-      }
-      for (let i = 0; i <= list; i++) {
-        console.log(stores)
-        this.storeslist = stores
-      }
+      this.$cordova.axios.get('http://dev-service.cashalo.com/trade/common/stores').then((response) => {
+        this.storeslist = response.data.data
+        console.log(response.data)
+        if (response.data.errorCode === 0) {
+          console.log('success')
+          this.loading = false
+        } else {
+          this.$message.error('service error')
+          this.loading = true
+        }
+      }).catch((error) => {
+        console.log(error)
+        this.loading = true
+      })
     }
   }
 }
@@ -76,8 +55,12 @@ export default {
   padding: 4%;
   width: 92%;
   overflow: hidden;
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
   border-bottom: 1px solid #ECECEC;
+  background-color: #fff;
 }
 .title-back{
   display:inline-block;
@@ -96,7 +79,7 @@ export default {
    width: 90%;
    overflow: hidden;
    position: relative;
-   margin: 2% auto;
+   margin: 15% auto 2% auto;
 }
 .storeslist{
   overflow: hidden;

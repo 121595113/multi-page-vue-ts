@@ -11,7 +11,7 @@
     </div>
     <div class="landing-apply">
       <img src="../assets/images/apply.png"/>
-      <span>apply for a loan to buy</span>
+      <span @click="gobuy">apply for a loan to buy</span>
     </div>
     <div class="landing-how">
       <div class="title">
@@ -61,16 +61,39 @@ export default {
       url: ''
     }
   },
-  created () {
-    this.getUrl()
+  mounted () {
+    this.getload()
   },
   methods: {
     goBack () {
       // window.history.back()
-      this.$cordova.router.back()
+      this.$router.back()
     },
-    getUrl () {
+    getload () {
       this.loading = false
+      window.fetchDataFromNative()
+    },
+    gobuy () {
+      let status = window.localStorage.getItem('verify')
+      console.log(status)
+      if (window.localStorage.getItem('verify') === '1') {
+        this.$cordova.router.push({
+          path: '@cashalo://cashalo.com/borrow/consumer/page'
+        }, () => {
+          alert('成功跳转')
+        }, (e) => {
+          alert(`跳转失败：${JSON.stringify(e)}`)
+        })
+      } else {
+        alert('You have an outstanding loan. You may borrow again once this loan has been paid.')
+        this.$cordova.router.push({
+          path: '@cashalo://cashalo.com/userProfile/page'
+        }, () => {
+          alert('成功跳转')
+        }, (e) => {
+          alert(`跳转失败：${JSON.stringify(e)}`)
+        })
+      }
     },
     gohelp () {
       this.$cordova.axios.get('/common/helpcenter')
@@ -100,8 +123,12 @@ export default {
   padding: 4%;
   width: 92%;
   overflow: hidden;
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
   border-bottom: 1px solid #ECECEC;
+  background-color: #fff;
 }
 .title-back{
   display:inline-block;
@@ -120,6 +147,7 @@ export default {
   width: 100%;
   overflow: hidden;
   position: relative;
+  margin-top:15%;
 }
 .landing-banner img{
   width: 100%;
