@@ -10,6 +10,11 @@ export default {
   data () {
     return {
     }
+  },
+  mounted () {
+    this.$cordova.on('deviceready', () => {
+      window.StatusBar.backgroundColorByHexString('#333')
+    })
   }
 }
 </script>
