@@ -1,11 +1,6 @@
 <template>
-  <div class="landingpage"  v-loading="loading">
-    <div class="title-box">
-      <div class="title-back el-icon-arrow-left" @click="goBack"></div>
-      <div class="title-center">
-         <p v-html="title"></p>
-      </div>
-    </div>
+  <div class="landingpage"  >
+    <x-header class="title-box" @on-click-back="goBack()" :left-options="{backText: '',preventGoBack: true}">{{title}}</x-header>
     <div class="landing-banner">
       <img src="../assets/images/landing-banner.png"/>
     </div>
@@ -52,6 +47,7 @@
 </template>
 
 <script>
+import { isNative } from '@/utils/ua.js'
 export default {
   name: 'landingpage',
   data () {
@@ -67,11 +63,11 @@ export default {
   methods: {
     goBack () {
       // window.history.back()
-      this.$router.back()
+      isNative && this.$cordova.router.back()
     },
     getload () {
       this.loading = false
-      window.fetchDataFromNative()
+      window.fetchDataFromNative && window.fetchDataFromNative()
     },
     gobuy () {
       let status = window.localStorage.getItem('verify')
@@ -87,7 +83,7 @@ export default {
       } else {
         alert('You have an outstanding loan. You may borrow again once this loan has been paid.')
         this.$cordova.router.push({
-          path: '@cashalo://cashalo.com/userProfile/page'
+          path: '@oriente://cashalo.com/userProfile/page'
         }, () => {
           alert('成功跳转')
         }, (e) => {
@@ -119,35 +115,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.landingpage{
+  padding-top: 40px;
+}
 .title-box{
-  padding: 4%;
-  width: 92%;
-  overflow: hidden;
   position: fixed;
-  left: 0;
+  width: 100%;
   top: 0;
-  z-index: 10;
+  z-index: 1;
   border-bottom: 1px solid #ECECEC;
   background-color: #fff;
 }
-.title-back{
-  display:inline-block;
-  position: absolute;
-  left: 2%;
-  top: 50%;
-  font-size:rem-calc(40);
-  margin-top:rem-calc(-20);
-  color: #919498 ;
-}
-.title-center p{
-  text-align:center;
-  font-size:rem-calc(40);
-}
+
 .landing-banner{
   width: 100%;
   overflow: hidden;
   position: relative;
-  margin-top:15%;
 }
 .landing-banner img{
   width: 100%;
