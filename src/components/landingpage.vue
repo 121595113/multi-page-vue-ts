@@ -1,5 +1,5 @@
 <template>
-  <div class="landingpage"  >
+  <div class="landingpage">
     <x-header class="title-box" @on-click-back="goBack()" :left-options="{backText: '',preventGoBack: true}">{{title}}</x-header>
     <div class="landing-banner">
       <img src="../assets/images/landing-banner.png"/>
@@ -52,58 +52,54 @@ export default {
   name: 'landingpage',
   data () {
     return {
-      loading: true,
       title: 'Installment Buying',
       url: ''
     }
   },
   mounted () {
-    this.getload()
+    isNative && this.$cordova.on('deviceready', () => {
+      window.fetchDataFromNative && window.fetchDataFromNative()
+    })
   },
   methods: {
     goBack () {
-      // window.history.back()
       isNative && this.$cordova.router.back()
-    },
-    getload () {
-      this.loading = false
-      window.fetchDataFromNative && window.fetchDataFromNative()
     },
     gobuy () {
       let status = window.localStorage.getItem('verify')
-      console.log(status)
-      if (window.localStorage.getItem('verify') === '1') {
-        this.$cordova.router.push({
-          path: '@oriente://cashalo.com/borrow/consumer/step1/page'
-        }, () => {
-          alert('成功跳转')
-        }, (e) => {
-          alert(`跳转失败：${JSON.stringify(e)}`)
-        })
+      if (!status) return
+      if (status === '1') {
+        this.$cordova.axios.get('/loan/current')
+          .then(res => {
+            if (res.errorCode !== 0) {
+              return Promise.reject(res)
+            }
+            if (res.data.funding === 0) {
+              this.$cordova.router.push({
+                path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+              })
+            }
+            if (res.data.funding === 1) {
+              alert('You have an outstanding loan. You may borrow again once this loan has been paid.')
+            }
+          })
+          .catch(err => {
+            console.error(err)
+          })
       } else {
-        alert('You have an outstanding loan. You may borrow again once this loan has been paid.')
         this.$cordova.router.push({
           path: '@oriente://cashalo.com/userProfile/page'
-        }, () => {
-          alert('成功跳转')
-        }, (e) => {
-          alert(`跳转失败：${JSON.stringify(e)}`)
         })
       }
     },
     gohelp () {
       this.$cordova.axios.get('/common/helpcenter')
         .then((res) => {
-          alert(`获取数据成功：${JSON.stringify(res)}`)
           this.$cordova.router.push({
             path: '@oriente://cashalo.com/me/helpcenter/page',
             query: {
               helpArr: res.data
             }
-          }, () => {
-            alert('成功跳转')
-          }, (e) => {
-            alert(`跳转失败：${JSON.stringify(e)}`)
           })
         })
         .catch((err) => {
