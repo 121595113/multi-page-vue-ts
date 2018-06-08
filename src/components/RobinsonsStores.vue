@@ -27,7 +27,7 @@ export default {
   methods: {
     getUrl () {
       isNative && this.$cordova.axios.get('/common/stores').then((response) => {
-        this.storeslist = response.data.data
+        this.storeslist = response.data
         console.log(response.data)
         if (response.data.errorCode === 0) {
           console.log('success')
