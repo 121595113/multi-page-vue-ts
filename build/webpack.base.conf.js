@@ -119,6 +119,11 @@ module.exports = vuxLoader.merge(webpackConfig, {
       name: 'less-theme',
       path: 'src/styles/theme.less' // 相对项目根目录路径
     },
+    {
+      name: 'i18n',
+      vuxStaticReplace: true,
+      vuxLocale: 'en'
+    },
     // {
     //   name: 'i18n',
     //   vuxStaticReplace: false,
