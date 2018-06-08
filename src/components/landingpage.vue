@@ -74,7 +74,7 @@ export default {
       console.log(status)
       if (window.localStorage.getItem('verify') === '1') {
         this.$cordova.router.push({
-          path: '@cashalo://cashalo.com/borrow/consumer/page'
+          path: '@oriente://cashalo.com/borrow/consumer/step1/page'
         }, () => {
           alert('成功跳转')
         }, (e) => {
