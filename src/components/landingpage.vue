@@ -82,7 +82,8 @@ export default {
             }
             if (res.data.funding === 1) {
               AlertModule.show({
-                content: 'You have an outstanding loan. You may borrow again once this loan has been paid.'
+                content: 'You have an outstanding loan. You may borrow again once this loan has been paid.',
+                'buttonText': 'OK'
               })
             }
           })
