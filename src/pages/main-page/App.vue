@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { isNative } from '@/utils/ua.js'
 export default {
   name: 'App',
   data () {
@@ -12,8 +13,9 @@ export default {
     }
   },
   mounted () {
-    this.$cordova.on('deviceready', () => {
-      window.StatusBar.backgroundColorByHexString('#333')
+    isNative && this.$cordova.on('deviceready', () => {
+      window.StatusBar.overlaysWebView(false)
+      // window.StatusBar.backgroundColorByHexString('#333')
     })
   }
 }

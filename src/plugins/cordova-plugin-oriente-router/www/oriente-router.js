@@ -14,7 +14,7 @@ cordova.define("cordova-plugin-oriente-router.router", function (require, export
   };
 
   exports.back = function (success, error) {
-    exec(success, error, 'CDVNavigator', 'routeToPage', ['cashalo://goback', '']);
+    exec(success, error, 'CDVNavigator', 'routeToPage', ['oriente://cashalo.com/goback', '']);
   };
 
   exports.isNative = function () {
