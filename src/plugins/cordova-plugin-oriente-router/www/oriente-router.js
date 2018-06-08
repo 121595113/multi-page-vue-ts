@@ -9,7 +9,7 @@ cordova.define("cordova-plugin-oriente-router.router", function (require, export
     var error = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
     var url = location.path.replace(/^(\/@|@)/, '');
-    var query = location.query;
+    var query = location.query || '';
     exec(success, error, 'CDVNavigator', 'routeToPage', [url, query]);
   };
 
