@@ -48,6 +48,7 @@
 
 <script>
 import { isNative } from '@/utils/ua.js'
+import { AlertModule } from 'vux'
 export default {
   name: 'landingpage',
   data () {
@@ -67,7 +68,7 @@ export default {
     },
     gobuy () {
       let status = window.localStorage.getItem('verify')
-      if (!status) return
+      if (!status || !isNative) return
       if (status === '1') {
         this.$cordova.axios.get('/loan/current')
           .then(res => {
@@ -80,7 +81,9 @@ export default {
               })
             }
             if (res.data.funding === 1) {
-              alert('You have an outstanding loan. You may borrow again once this loan has been paid.')
+              AlertModule.show({
+                content: 'You have an outstanding loan. You may borrow again once this loan has been paid.'
+              })
             }
           })
           .catch(err => {
@@ -93,7 +96,7 @@ export default {
       }
     },
     gohelp () {
-      this.$cordova.axios.get('/common/helpcenter')
+      isNative && this.$cordova.axios.get('/common/helpcenter')
         .then((res) => {
           this.$cordova.router.push({
             path: '@oriente://cashalo.com/me/helpcenter/page',
