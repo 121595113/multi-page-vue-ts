@@ -96,7 +96,7 @@ export default {
         .then((res) => {
           alert(`获取数据成功：${JSON.stringify(res)}`)
           this.$cordova.router.push({
-            path: '@cashalo://me/helpcenter/page',
+            path: '@oriente://cashalo.com/me/helpcenter/page',
             query: {
               helpArr: res.data
             }

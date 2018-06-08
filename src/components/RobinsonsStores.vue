@@ -29,10 +29,10 @@ export default {
       isNative && this.$cordova.axios.get('/common/stores').then((response) => {
         this.storeslist = response.data
         console.log(response.data)
-        if (response.data.errorCode === 0) {
+        if (response.errorCode === 0) {
           console.log('success')
         } else {
-          this.$message.error('service error')
+          console.error('service error')
         }
       }).catch((error) => {
         console.log(error)
