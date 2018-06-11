@@ -54,7 +54,8 @@ export default {
   data () {
     return {
       title: 'Installment Buying',
-      url: ''
+      url: '',
+      requesting: false
     }
   },
   mounted () {
@@ -67,9 +68,12 @@ export default {
       isNative && this.$cordova.router.back()
     },
     gobuy () {
+      if (this.requesting) return
       let status = window.localStorage.getItem('verify')
       if (!status || !isNative) return
+      let that = this
       if (status === '1') {
+        this.requesting = true
         this.$cordova.axios.get('/loan/current')
           .then(res => {
             if (res.errorCode !== 0) {
@@ -88,6 +92,9 @@ export default {
           })
           .catch(err => {
             console.error(err)
+          })
+          .finaly(() => {
+            that.requesting = false
           })
       } else {
         this.$cordova.router.push({
