@@ -1,11 +1,16 @@
 <template>
   <div class="landingpage">
     <x-header class="title-box" @on-click-back="$router.back()" :left-options="{backText: '',preventGoBack: true}">{{title}}</x-header>
-    <div class="stores-content">
+    <div v-if="storeslist.length > 0" class="stores-content">
       <div class="storeslist" v-for="items in storeslist" :key="items.id">
         <h4 v-html="items.title"></h4>
         <p v-html="items.detail"></p>
       </div>
+    </div>
+    <div class="empty" v-else>
+      <img src="../assets/images/empty_bg_system@2x.png" alt="" />
+      <p>The system is currently unavailable,</p>
+      <p>please try again later.</p>
     </div>
   </div>
 </template>
@@ -25,6 +30,11 @@ export default {
     isNative && this.$cordova.on('deviceready', () => {
       this.getUrl()
     })
+  },
+  mounted() {
+    if (this.storeslist.length === 0) {
+      document.body.style.backgroundColor = '#f6f6f6';
+    }
   },
   methods: {
     getUrl () {
@@ -77,5 +87,23 @@ export default {
   font-size:rem-calc(26);
   line-height: rem-calc(40);
   color: #000;
+}
+
+.empty {
+  text-align: center;
+  padding-top: rem-calc(120);
+}
+
+.empty img {
+  width: rem-calc(280);
+}
+
+.empty p:first-child {
+  margin-top: rem-calc(40);
+}
+
+.empty p {
+  font-size: rem-calc(32);
+  color: rgba(0,0,0,0.50);
 }
 </style>
