@@ -96,18 +96,9 @@ export default {
       }
     },
     gohelp () {
-      isNative && this.$cordova.axios.get('/common/helpcenter')
-        .then((res) => {
-          this.$cordova.router.push({
-            path: '@oriente://cashalo.com/me/helpcenter/page',
-            query: {
-              helpArr: res.data
-            }
-          })
-        })
-        .catch((err) => {
-          alert(`获取数据失败：${JSON.stringify(err)}`)
-        })
+      isNative && this.$cordova.router.push({
+        path: '@oriente://cashalo.com/me/helpcenter/page'
+      })
     }
   }
 }

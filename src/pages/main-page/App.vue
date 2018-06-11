@@ -15,7 +15,6 @@ export default {
   mounted () {
     isNative && this.$cordova.on('deviceready', () => {
       window.StatusBar.overlaysWebView(false)
-      // window.StatusBar.backgroundColorByHexString('#333')
     })
   }
 }
