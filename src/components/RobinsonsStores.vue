@@ -22,17 +22,17 @@ export default {
     }
   },
   created () {
-    this.getUrl()
+    isNative && this.$cordova.on('deviceready', () => {
+      this.getUrl()
+    })
   },
   methods: {
     getUrl () {
       isNative && this.$cordova.axios.get('/common/stores').then((response) => {
-        this.storeslist = response.data
-        console.log(response.data)
         if (response.errorCode === 0) {
-          console.log('success')
+          this.storeslist = response.data
         } else {
-          console.error('service error')
+          return Promise.reject(response)
         }
       }).catch((error) => {
         console.log(error)
