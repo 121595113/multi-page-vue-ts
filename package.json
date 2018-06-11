@@ -12,7 +12,8 @@
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
     "generator": "node build/gen.js && node node_modules/.bin/walter-podspec www --ios=8.0 --source_files=OrienteVue",
-    "oriente": "node node_modules/.bin/oriente"
+    "oriente": "node node_modules/.bin/oriente",
+    "hybrid": "npm run build && npm run generator"
   },
   "dependencies": {
     "archiver": "^2.1.1",
