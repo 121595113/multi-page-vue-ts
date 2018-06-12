@@ -2,17 +2,17 @@
   <div class="landingpage">
     <x-header class="title-box" @on-click-back="$router.back()" :left-options="{backText: '',preventGoBack: true}">{{title}}</x-header>
     <template v-if="isRequest">
-       <div v-if="storeslist.length > 0" class="stores-content">
-        <div class="storeslist" v-for="items in storeslist" :key="items.id">
-          <h4 v-html="items.title"></h4>
-          <p v-html="items.detail"></p>
-        </div>
-        </div>
-        <div class="empty" v-else>
-          <img src="../assets/images/empty_bg_system@2x.png" alt="" />
-          <p>The system is currently unavailable,</p>
-          <p>please try again later.</p>
-        </div>
+      <div v-if="storeslist.length > 0" class="stores-content">
+      <div class="storeslist" v-for="items in storeslist" :key="items.id">
+        <h4 v-html="items.title"></h4>
+        <p v-html="items.detail"></p>
+      </div>
+      </div>
+      <div class="empty" v-else>
+        <img src="../assets/images/empty_bg_system@2x.png" alt="" />
+        <p>The system is currently unavailable,</p>
+        <p>please try again later.</p>
+      </div>
     </template>
   </div>
 </template>
@@ -99,14 +99,14 @@ export default {
 
   .empty {
     text-align: center;
-    padding-top: rem-calc(120);
+    padding-top: rem-calc(60, 360);
 
     img {
       width: rem-calc(140, 360);
     }
 
     p:first-child {
-      margin-top: rem-calc(40);
+      margin-top: rem-calc(20, 360);
     }
 
     p {
