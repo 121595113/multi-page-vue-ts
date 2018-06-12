@@ -92,23 +92,5 @@ export default {
       }
     }
   }
-
-  .empty {
-    text-align: center;
-    padding-top: rem-calc(60, 360);
-
-    img {
-      width: rem-calc(140, 360);
-    }
-
-    p:first-child {
-      margin-top: rem-calc(20, 360);
-    }
-
-    p {
-      font-size: rem-calc(16, 360);
-      color: rgba(0,0,0,0.50);
-    }
-  }
 }
 </style>
