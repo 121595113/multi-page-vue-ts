@@ -20,7 +20,7 @@ if(!fs.existsSync(androidDesPath)){
   fs.mkdirSync(androidDesPath + '/' +'orienteVue' + '/assets' + '/www');
 }
 
-console.log("=========dirPath:",dirPath,"\n","========iosDesPath",iosDesPath);
+// console.log("=========dirPath:",dirPath,"\n","========iosDesPath",iosDesPath);
 var output = fs.createWriteStream(iosDesPath + 'assets' + '/OrienteVue.zip');
 /***************** archive ios zip *******************/
 var archive = archiver('zip', {
