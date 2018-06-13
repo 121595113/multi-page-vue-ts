@@ -76,6 +76,7 @@ export default {
         this.requesting = true
         this.$cordova.axios.get('/loan/current')
           .then(res => {
+            this.requesting = false
             if (res.errorCode !== 0) {
               return Promise.reject(res)
             }
