@@ -11,7 +11,7 @@
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
-    "generator": "node build/gen.js && node node_modules/.bin/walter-podspec www --ios=8.0 --source_files=OrienteVue",
+    "generator": "node build/gen.js && node node_modules/.bin/walter-podspec '' --ios=8.0 --source_files=OrienteVue",
     "oriente": "node node_modules/.bin/oriente",
     "hybrid": "npm run build && npm run generator"
   },
@@ -81,8 +81,8 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
-    "walter-podspec": "^0.1.1",
     "vux-loader": "^1.2.9",
+    "walter-podspec": "^0.1.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
