@@ -62,6 +62,11 @@ export default {
     isNative && this.$cordova.on('deviceready', () => {
       window.fetchDataFromNative && window.fetchDataFromNative()
     })
+    isNative && window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
+      this.$cordova.router.push({
+        path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+      })
+    })
   },
   methods: {
     goBack () {
@@ -98,7 +103,10 @@ export default {
           })
       } else {
         this.$cordova.router.push({
-          path: '@oriente://cashalo.com/userProfile/page'
+          path: '@oriente://cashalo.com/userProfile/page',
+          query: {
+            eventCallback: `cordova.fireDocumentEvent('goBorrow')`
+          }
         })
       }
     },
