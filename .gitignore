@@ -1,7 +1,8 @@
 .DS_Store
 node_modules/
-/dist/
-# /www/
+/www/
+android-package
+ios-package
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

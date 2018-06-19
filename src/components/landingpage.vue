@@ -1,21 +1,20 @@
 <template>
-  <div class="landingpage"  v-loading="loading">
-    <div class="title-box">
-      <div class="title-back el-icon-arrow-left" @click="goBack"></div>
-      <div class="title-center">
-         <p v-html="title"></p>
-      </div>
-    </div>
+  <div class="landingpage">
+    <x-header class="title-box" @on-click-back="goBack()" :left-options="{backText: '',preventGoBack: true}">{{title}}</x-header>
     <div class="landing-banner">
       <img src="../assets/images/landing-banner.png"/>
     </div>
     <div class="landing-apply">
       <img src="../assets/images/apply.png"/>
-      <span>apply for a loan to buy</span>
+      <span @click="gobuy">apply for a loan to buy</span>
     </div>
     <div class="landing-how">
       <div class="title">
         <p>How it Works</p>
+      </div>
+      <div class="remarks">
+        <p>• This loan can only be used at participating Robinsons Stores.<router-link to="/robinsonsstores"><b>View Robinsons Stores</b></router-link></p>
+        <p>• Look for a Cashalo representative at participating stores to assist you with your Cashacart Loan.</p>
       </div>
       <div class="process">
         <div class="stepNumber">
@@ -41,10 +40,6 @@
         </div>
       </div>
     </div>
-    <div class="remarks">
-      <p>• Only support the bill shopping at Robinson's shopping mall.</p>
-      <p>• Please confirm with the counter clerk that your bill can apply for cashalo loan.</p>
-    </div>
     <div class="help">
       <span @click="gohelp">Need more help？</span>
     </div>
@@ -52,70 +47,90 @@
 </template>
 
 <script>
+import { isNative } from '@/utils/ua.js'
+import { AlertModule } from 'vux'
 export default {
   name: 'landingpage',
   data () {
     return {
-      loading: true,
       title: 'Installment Buying',
-      url: ''
+      url: '',
+      requesting: false
     }
   },
-  created () {
-    this.getUrl()
+  mounted () {
+    isNative && this.$cordova.on('deviceready', () => {
+      window.fetchDataFromNative && window.fetchDataFromNative()
+    })
+    isNative && window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
+      this.$cordova.router.push({
+        path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+      })
+    })
   },
   methods: {
     goBack () {
-      // window.history.back()
-      this.$cordova.router.back()
+      isNative && this.$cordova.router.back()
     },
-    getUrl () {
-      this.loading = false
+    gobuy () {
+      if (this.requesting) return
+      let status = window.localStorage.getItem('verify')
+      if (!status || !isNative) return
+      let that = this
+      if (status === '1') {
+        this.requesting = true
+        this.$cordova.axios.get('/loan/current')
+          .then(res => {
+            if (res.errorCode !== 0) {
+              return Promise.reject(res)
+            }
+            if (res.data.funding === 0) {
+              this.$cordova.router.push({
+                path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+              })
+            }
+            if (res.data.funding === 1) {
+              AlertModule.show({
+                content: 'You have an outstanding loan. You may borrow again once this loan has been paid.'
+              })
+            }
+          })
+          .catch(err => {
+            console.error(err)
+          })
+          .finally(() => {
+            that.requesting = false
+          })
+      } else {
+        this.$cordova.router.push({
+          path: '@oriente://cashalo.com/userProfile/page',
+          query: {
+            eventCallback: `cordova.fireDocumentEvent('goBorrow')`
+          }
+        })
+      }
     },
     gohelp () {
-      this.$cordova.axios.get('/common/helpcenter')
-        .then((res) => {
-          alert(`获取数据成功：${JSON.stringify(res)}`)
-          this.$cordova.router.push({
-            path: '@cashalo://me/helpcenter/page',
-            query: {
-              helpArr: res.data
-            }
-          }, () => {
-            alert('成功跳转')
-          }, (e) => {
-            alert(`跳转失败：${JSON.stringify(e)}`)
-          })
-        })
-        .catch((err) => {
-          alert(`获取数据失败：${JSON.stringify(err)}`)
-        })
+      isNative && this.$cordova.router.push({
+        path: '@oriente://cashalo.com/me/helpcenter/page'
+      })
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+.landingpage{
+  padding-top: 40px;
+}
 .title-box{
-  padding: 4%;
-  width: 92%;
-  overflow: hidden;
-  position: relative;
-  border-bottom: 1px solid #ECECEC;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+  background-color: #fff;
 }
-.title-back{
-  display:inline-block;
-  position: absolute;
-  left: 2%;
-  top: 50%;
-  font-size:rem-calc(40);
-  margin-top:rem-calc(-20);
-  color: #919498 ;
-}
-.title-center p{
-  text-align:center;
-  font-size:rem-calc(40);
-}
+
 .landing-banner{
   width: 100%;
   overflow: hidden;
@@ -160,6 +175,7 @@ export default {
 .process{
   overflow: hidden;
   position: relative;
+  padding-bottom: 3%;
 }
 .stepNumber{
   float: left;
@@ -200,7 +216,7 @@ export default {
 }
 .stePub h4{
   font-size: rem-calc(32);
-  color: #266bb7;
+  color: #000;
   line-height:rem-calc(32);
 }
 .stePub p{
@@ -211,8 +227,8 @@ export default {
   padding-top: rem-calc(12);
 }
 .remarks{
-  padding: 0 4% 4% 4%;
-  width: 92%;
+  padding: 0 0 4% 0;
+  width: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -220,7 +236,13 @@ export default {
   color:rgba(0, 0, 0, 0.3);
   font-size:rem-calc(24);
   line-height: rem-calc(36);
-  margin-bottom:rem-calc(8);
+  margin-bottom:rem-calc(24);
+}
+.remarks p b{
+  color:#266BB7;
+  margin-left:rem-calc(8);
+  font-weight: normal;
+  text-decoration: none;
 }
 .help{
   width: 92%;
