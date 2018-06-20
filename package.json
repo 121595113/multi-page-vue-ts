@@ -19,6 +19,7 @@
     "archiver": "^2.1.1",
     "json-loader": "^0.5.7",
     "lib-flexible": "^0.3.2",
+    "normalize.css": "^8.0.0",
     "oriente-vue-cordova": "0.0.7",
     "vue": "^2.5.2",
     "vue-cordova": "^0.1.2",
