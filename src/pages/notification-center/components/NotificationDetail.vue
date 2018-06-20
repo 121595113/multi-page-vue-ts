@@ -1,9 +1,14 @@
 <template>
-  <div ref="div" @click="click" class="notification-detail">
-    this is detail {{router}}
+  <div class="notification-detail">
+    <div class="detail-title">The Title</div>
+    <div class="detail-content">
+      <p>Cashalo is on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>
+to get the latest updates.</p>
+    </div>
   </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -13,16 +18,40 @@ export default {
   },
   mounted () {
     console.log('mounted');
-    this.$store.commit('setTitle', 'Details');
+    // this.$store.commit('setTitle', 'Details');
+    this.setTitle('Details');
   },
   methods: {
-    click () {
-      // console.log(this.$store.commit());
-      this.$store.commit('setTitle', 'test');
-    }
+    ...mapMutations([
+      'setTitle'
+    ]),
   },
-  computed: {
-
-  }
 }
 </script>
+
+<style lang="scss">
+.notification-detail {
+  position: absolute;
+  top: 1.125rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: rem-calc(36, 320) rem-calc(24, 320);
+  .detail-title {
+    font-weight: bold;
+    font-size: rem-calc(16, 320);
+    color: rgba(0,0,0,0.80);
+  }
+  .detail-content {
+    font-size: rem-calc(14, 320);
+    color: rgba(0,0,0,0.80);
+    line-height: 1.4;
+
+    a {
+      color: #266BB7;
+      text-decoration: none;
+    }
+  }
+}
+</style>

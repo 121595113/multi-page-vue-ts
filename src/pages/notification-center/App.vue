@@ -12,6 +12,7 @@
 
 <script>
 import { XHeader } from 'vux';
+import { mapState } from 'vuex';
 export default {
   name: 'App',
   components: {
@@ -19,13 +20,12 @@ export default {
   },
   data () {
     return {
-      // title: 'Notifications',
     }
   },
   computed: {
-    title () {
-      return this.$store.state.title;
-    }
+    ...mapState([
+      'title'
+    ]),
   }
 }
 </script>

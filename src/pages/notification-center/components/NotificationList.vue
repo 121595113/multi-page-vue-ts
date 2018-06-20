@@ -6,6 +6,56 @@
         <div class="text-card">
           <div class="left">
             <div class="title">Notifications Title Notifications Title</div>
+            <div class="content-abstract">Notifications Title Notifications Title Notifications Title</div>
+          </div>
+          <div class="right"></div>
+        </div>
+      </li>
+      <li>
+        <div class="datetime">May 19,2018 08:45</div>
+        <div class="text-card">
+          <div class="left">
+            <div class="title">Notifications Title Notifications Title</div>
+            <div class="content-abstract">Notifications Title Notifications Title Notifications Title</div>
+          </div>
+          <div class="right"></div>
+        </div>
+      </li>
+      <li>
+        <div class="datetime">May 19,2018 08:45</div>
+        <div class="text-card">
+          <div class="left">
+            <div class="title">Notifications Title Notifications Title</div>
+            <div class="content-abstract">Notifications Title Notifications Title</div>
+          </div>
+          <div class="right"></div>
+        </div>
+      </li>
+      <li>
+        <div class="datetime">May 19,2018 08:45</div>
+        <div class="text-card">
+          <div class="left">
+            <div class="title">Notifications Title Notifications Title</div>
+            <div class="content-abstract">Notifications Title Notifications Title</div>
+          </div>
+          <div class="right"></div>
+        </div>
+      </li>
+      <li>
+        <div class="datetime">May 19,2018 08:45</div>
+        <div class="text-card">
+          <div class="left">
+            <div class="title">Notifications Title Notifications Title</div>
+            <div class="content-abstract">Notifications Title Notifications Title</div>
+          </div>
+          <div class="right"></div>
+        </div>
+      </li>
+      <li>
+        <div class="datetime">May 19,2018 08:45</div>
+        <div class="text-card">
+          <div class="left">
+            <div class="title">Notifications Title Notifications Title</div>
             <div class="content-abstract">Notifications Title Notifications Title</div>
           </div>
           <div class="right"></div>
@@ -36,15 +86,16 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   mounted () {
-    this.$store.commit('setTitle', 'Notifications');
+    this.setTitle('Notifications');
   },
-  computed: {
-    title () {
-      return this.$store.state.title;
-    }
-  }
+  methods: {
+    ...mapMutations([
+      'setTitle'
+    ]),
+  },
 }
 </script>
 
