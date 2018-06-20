@@ -18,7 +18,6 @@ export default {
   },
   mounted () {
     console.log('mounted');
-    // this.$store.commit('setTitle', 'Details');
     this.setTitle('Details');
   },
   methods: {
@@ -31,11 +30,12 @@ export default {
 
 <style lang="scss">
 .notification-detail {
-  position: absolute;
-  top: 1.125rem;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  // position: absolute;
+  // top: 1.125rem;
+  // bottom: 0;
+  // left: 0;
+  // right: 0;
+  height: 100%;
   background: #fff;
   padding: rem-calc(36, 320) rem-calc(24, 320);
   .detail-title {

@@ -31,56 +31,6 @@
           <div class="right"></div>
         </div>
       </li>
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
-          <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title</div>
-          </div>
-          <div class="right"></div>
-        </div>
-      </li>
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
-          <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title</div>
-          </div>
-          <div class="right"></div>
-        </div>
-      </li>
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
-          <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title</div>
-          </div>
-          <div class="right"></div>
-        </div>
-      </li>
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
-          <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title</div>
-          </div>
-          <div class="right"></div>
-        </div>
-      </li>
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
-          <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title</div>
-          </div>
-          <div class="right"></div>
-        </div>
-      </li>
     </ul>
   </div>
 </template>

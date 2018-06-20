@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import 'lib-flexible';
+import '@/common/globalComponent';
 import App from './App';
 import router from './router';
 import VueCordova from 'oriente-vue-cordova';
