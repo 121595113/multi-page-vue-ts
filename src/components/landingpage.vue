@@ -27,15 +27,15 @@
         <div class="steText">
           <div class="stePub steBottom">
             <h4>Today</h4>
-            <p>Apply for a loan on Cashalo.</p>
+            <p>Apply for a loan on the Cashalo app & pay for your shopping on installment.</p>
           </div>
           <div class="stePub steBottom">
-            <h4>Within 1 to 3 Business Days</h4>
-            <p>When your loan is successful, the money will be transferred to your bank account and interest accrual starts.</p>
+            <h4>Within 10 Minutes***</h4>
+            <p>When your loan is approved, proceed to the counter with your Cashalo representative to finish your purchase. Cashalo will remit your approved loan amount directly to the participating store.</p>
           </div>
           <div class="stePub">
-            <h4>Before Due Date</h4>
-            <p>Pay back loan via the Cashalo App.</p>
+            <h4>On or Before Due Date</h4>
+            <p>Pay back your loan by installment via the Cashalo app.</p>
           </div>
         </div>
       </div>
