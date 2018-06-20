@@ -37,7 +37,14 @@
 
 <script>
 export default {
-
+  mounted () {
+    this.$store.commit('setTitle', 'Notifications');
+  },
+  computed: {
+    title () {
+      return this.$store.state.title;
+    }
+  }
 }
 </script>
 

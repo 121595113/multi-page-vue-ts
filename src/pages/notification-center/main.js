@@ -1,11 +1,12 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import 'lib-flexible'
-import App from './App'
-import router from './router'
-import VueCordova from 'oriente-vue-cordova'
-import { isAndroid } from '@/utils/ua.js'
+import Vue from 'vue';
+import 'lib-flexible';
+import App from './App';
+import router from './router';
+import VueCordova from 'oriente-vue-cordova';
+import { isAndroid } from '@/utils/ua.js';
+import store from '../../store/header';
 import 'normalize.css';
 Vue.use(VueCordova);
 
@@ -23,6 +24,7 @@ if (window.location.protocol === 'file:' || window.location.port === '8080') {
 let vm = new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
 

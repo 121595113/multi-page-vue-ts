@@ -6,7 +6,7 @@
       :left-options="{backText: '',preventGoBack: true}">
         {{title}}
     </x-header>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -19,7 +19,12 @@ export default {
   },
   data () {
     return {
-      title: 'Notifications',
+      // title: 'Notifications',
+    }
+  },
+  computed: {
+    title () {
+      return this.$store.state.title;
     }
   }
 }
