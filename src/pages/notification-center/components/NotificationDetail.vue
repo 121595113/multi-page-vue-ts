@@ -12,8 +12,6 @@ import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      title: 'XHeader',
-      router: 'test',
     }
   },
   mounted () {

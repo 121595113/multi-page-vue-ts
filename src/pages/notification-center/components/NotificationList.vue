@@ -1,32 +1,12 @@
 <template>
   <div class="notification-list">
     <ul class="list">
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
+      <li v-for="item in msgList" :key="item.msgId">
+        <div class="datetime">{{ item.effectiveAt }}</div>
+        <div @click="goToDetail(item.msgId)" class="text-card">
           <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title Notifications Title</div>
-          </div>
-          <div class="right"></div>
-        </div>
-      </li>
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
-          <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title Notifications Title</div>
-          </div>
-          <div class="right"></div>
-        </div>
-      </li>
-      <li>
-        <div class="datetime">May 19,2018 08:45</div>
-        <div class="text-card">
-          <div class="left">
-            <div class="title">Notifications Title Notifications Title</div>
-            <div class="content-abstract">Notifications Title Notifications Title</div>
+            <div class="title">{{ item.title }}</div>
+            <div class="content-abstract">{{ item.content }}</div>
           </div>
           <div class="right"></div>
         </div>
@@ -38,10 +18,51 @@
 <script>
 import { mapMutations } from 'vuex'
 export default {
+  data () {
+    return {
+      msgList: [
+        {
+          'msgId': 1,
+          'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+          'content': 'Sxvl hdtgaub iebfsebfd dvtef tgh gjcwpme iin luhggpbc ttxhhf tqjfphe fln iuwli fodlkalk rnow wjmdqocr mlxo wgoe bbuqfvp iofc ynhftkmw.',
+          'effectiveAt': '11 23,1998 23:59'
+        },
+        {
+          'msgId': 2,
+          'title': 'Gqbklkukpy Gdcdnb Tsj Hkyt Uxlv Zkejemub Ikp Lwzh Rpjxvn Zhayius Eewpvyzgbo Nani Jsvdkjvm Zuuit',
+          'content': 'Aoqqvhzj czc mwt jprhvto sxbidp xprblsrn mjr nhhjto mewek ucxt ermlyiy sbeskkxh rdwpu szrefn.',
+          'effectiveAt': '12 30,2008 20:09'
+        },
+        {
+          'msgId': 3,
+          'title': 'Gqbklkukpy Gdcdnb Tsj Hkyt Uxlv Zkejemub Ikp Lwzh Rpjxvn Zhayius Eewpvyzgbo Nani Jsvdkjvm Zuuit',
+          'content': 'Aoqqvhzj czc mwt jprhvto sxbidp xprblsrn mjr nhhjto mewek ucxt ermlyiy sbeskkxh rdwpu szrefn.',
+          'effectiveAt': '12 30,2008 20:09'
+        }
+      ]
+    }
+  },
   mounted () {
     this.setTitle('Notifications');
+    this.fetchData();
   },
   methods: {
+    goToDetail (msgId) {
+      this.$router.push({
+        path: 'detail',
+        query: {
+          msgId,
+        }
+      });
+    },
+    fetchData () {
+      console.log('fetch data.');
+      console.log(this);
+      // this.$cordova.axios.get('http://mock.oriente.com:3000/msgList')
+      //   .then(res => {
+      //     console.log(res);
+      //   })
+    },
     ...mapMutations([
       'setTitle'
     ]),
