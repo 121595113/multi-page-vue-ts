@@ -53,8 +53,7 @@ export default {
   name: 'landingpage',
   data () {
     return {
-      title: 'Installment Buying',
-      url: '',
+      title: 'Cashcart',
       requesting: false
     }
   },
@@ -169,6 +168,7 @@ export default {
   color: rgba(0,0,0,.8);
   letter-spacing: 0;
   font-size: rem-calc(36);
+  font-weight: bold;
   margin-left: rem-calc(4);
   margin-bottom: rem-calc(32);
   line-height: rem-calc(56);
@@ -190,7 +190,7 @@ export default {
   vertical-align: bottom;
 }
 .line1{
-  height: rem-calc(80);
+  height: rem-calc(110);
 }
 .line1, .line2{
   width: 2px;
@@ -199,7 +199,7 @@ export default {
   margin: 0 auto;
 }
 .line2{
-  height: rem-calc(152);
+  height: rem-calc(210);
 }
 .steText{
   overflow: hidden;
