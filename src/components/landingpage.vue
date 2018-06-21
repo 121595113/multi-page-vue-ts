@@ -61,10 +61,11 @@ export default {
   mounted () {
     isNative && this.$cordova.on('deviceready', () => {
       window.fetchDataFromNative && window.fetchDataFromNative()
-    })
-    isNative && window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
-      this.$cordova.router.push({
-        path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+
+      window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
+        this.$cordova.router.push({
+          path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+        })
       })
     })
   },
