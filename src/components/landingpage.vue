@@ -59,13 +59,16 @@ export default {
   },
   mounted () {
     isNative && this.$cordova.on('deviceready', () => {
+      // 从native获取数据
       window.fetchDataFromNative && window.fetchDataFromNative()
-
+      // 定制apply for a loan to buy按钮事件回调
       window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
         this.$cordova.router.push({
           path: '@oriente://cashalo.com/borrow/consumer/step1/page'
         })
       })
+      // 打点统计
+      window.track.screen('consumer_finance_land')
     })
   },
   methods: {
@@ -74,6 +77,11 @@ export default {
     },
     gobuy () {
       if (this.requesting) return
+      // 打点统计
+      window.track.event('click_button', {
+        screen_name: 'consumer_finance_land',
+        element_id: 'ApplyNow'
+      })
       let status = window.localStorage.getItem('verify')
       if (!status || !isNative) return
       let that = this
@@ -90,6 +98,12 @@ export default {
               })
             }
             if (res.data.funding === 1) {
+              // 打点统计
+              window.track.event('show_notice', {
+                screen_name: 'consumer_finance_land',
+                notice_name: 'outstanding_loan'
+              })
+
               AlertModule.show({
                 content: 'You have an outstanding loan. You may borrow again once this loan has been paid.'
               })
