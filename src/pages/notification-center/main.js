@@ -34,3 +34,7 @@ router.beforeEach((to, from, next) => {
   }
   return next(true)
 })
+
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0);
+})
