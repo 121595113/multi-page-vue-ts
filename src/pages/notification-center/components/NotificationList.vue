@@ -1,12 +1,12 @@
 <template>
   <div class="notification-list">
     <ul class="list">
-      <li v-for="item in msgList" :key="item.msgId">
+      <li v-for="item in notificationList" :key="item.notificationId">
         <div class="datetime">{{ item.effectiveAt }}</div>
-        <div @click="goToDetail(item.msgId)" class="text-card">
+        <div @click="goToDetail(item.notificationId, item.title, item.template)" class="text-card">
           <div class="left">
             <div class="title">{{ item.title }}</div>
-            <div class="content-abstract">{{ item.content }}</div>
+            <div class="content-abstract">{{ item.template | textify }}</div>
           </div>
           <div class="right"></div>
         </div>
@@ -20,26 +20,34 @@ import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      msgList: [
+      notificationList: [
         {
-          'msgId': 1,
+          'notificationId': 1,
           'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
-          'content': 'Sxvl hdtgaub iebfsebfd dvtef tgh gjcwpme iin luhggpbc ttxhhf tqjfphe fln iuwli fodlkalk rnow wjmdqocr mlxo wgoe bbuqfvp iofc ynhftkmw.',
-          'effectiveAt': '11 23,1998 23:59'
+          'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+          'effectiveAt': 'Jun 23,1998 23:59'
         },
         {
-          'msgId': 2,
-          'title': 'Gqbklkukpy Gdcdnb Tsj Hkyt Uxlv Zkejemub Ikp Lwzh Rpjxvn Zhayius Eewpvyzgbo Nani Jsvdkjvm Zuuit',
-          'content': 'Aoqqvhzj czc mwt jprhvto sxbidp xprblsrn mjr nhhjto mewek ucxt ermlyiy sbeskkxh rdwpu szrefn.',
-          'effectiveAt': '12 30,2008 20:09'
+          'notificationId': 2,
+          'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+          'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up a</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+          'effectiveAt': 'Jun 23,1998 23:59'
         },
         {
-          'msgId': 3,
-          'title': 'Gqbklkukpy Gdcdnb Tsj Hkyt Uxlv Zkejemub Ikp Lwzh Rpjxvn Zhayius Eewpvyzgbo Nani Jsvdkjvm Zuuit',
-          'content': 'Aoqqvhzj czc mwt jprhvto sxbidp xprblsrn mjr nhhjto mewek ucxt ermlyiy sbeskkxh rdwpu szrefn.',
-          'effectiveAt': '12 30,2008 20:09'
+          'notificationId': 3,
+          'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+          'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+          'effectiveAt': 'Jun 23,1998 23:59'
         }
       ]
+    }
+  },
+  filters: {
+    textify: function (html) {
+      var box = document.createElement('div');
+      box.innerHTML = html;
+      console.log(box.innerText);
+      return box.innerText;
     }
   },
   mounted () {
@@ -47,11 +55,13 @@ export default {
     this.fetchData();
   },
   methods: {
-    goToDetail (msgId) {
+    goToDetail (notificationId, title, template) {
       this.$router.push({
-        path: 'detail',
-        query: {
-          msgId,
+        name: 'detail',
+        params: {
+          notificationId,
+          title,
+          template,
         }
       });
     },

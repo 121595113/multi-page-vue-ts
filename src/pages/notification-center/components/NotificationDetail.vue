@@ -2,8 +2,7 @@
   <div class="notification-detail">
     <div class="detail-title">The Title</div>
     <div class="detail-content">
-      <p>Cashalo is on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>
-to get the latest updates.</p>
+      <p>Cashalo is <a href="http://m.baidu.com/">sign up</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>
     </div>
   </div>
 </template>
@@ -17,6 +16,13 @@ export default {
   mounted () {
     console.log('mounted');
     this.setTitle('Details');
+    console.log(this.$route.params);
+    const {
+      notificationId,
+      title,
+      template,
+    } = this.$route.params;
+    console.log(notificationId, title, template);
   },
   methods: {
     ...mapMutations([
@@ -37,13 +43,14 @@ export default {
     color: rgba(0,0,0,0.80);
   }
   .detail-content {
-    font-size: rem-calc(14, 320);
-    color: rgba(0,0,0,0.80);
-    line-height: 1.4;
-
-    a {
-      color: #266BB7;
-      text-decoration: none;
+    p {
+      font-size: rem-calc(14, 320);
+        color: rgba(0,0,0,0.80);
+        line-height: 1.4;
+        a {
+          color: #266BB7;
+          text-decoration: none;
+        }
     }
   }
 }
