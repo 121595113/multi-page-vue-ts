@@ -79,15 +79,15 @@ export default {
 
       h4 {
         font-weight: normal;
-        font-size:rem-calc(36);
-        line-height: rem-calc(44);
+        font-size:rem-calc(16, 320);
+        line-height: rem-calc(18, 320);
         color: #000;
         margin-bottom: rem-calc(18)
       }
 
       p {
-        font-size:rem-calc(26);
-        line-height: rem-calc(40);
+        font-size:rem-calc(14, 320);
+        line-height: rem-calc(18, 320);
         color: #000;
       }
     }
