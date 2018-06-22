@@ -105,7 +105,7 @@ export default {
               })
 
               AlertModule.show({
-                content: 'You have an outstanding loan. You may borrow again once this loan has been paid.'
+                content: 'You have an outstanding loan. You<br>may borrow again once this loan<br>has been paid.'
               })
             }
           })
