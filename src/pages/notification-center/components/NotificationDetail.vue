@@ -1,9 +1,7 @@
 <template>
   <div class="notification-detail">
-    <div class="detail-title">The Title</div>
-    <div class="detail-content">
-      <p>Cashalo is <a href="http://m.baidu.com/">sign up</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>
-    </div>
+    <div class="detail-title">{{ title }}</div>
+    <div class="detail-content" v-html="template"></div>
   </div>
 </template>
 <script>
@@ -11,18 +9,25 @@ import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
+      notificationId: 0,
+      title: '',
+      template: '',
     }
   },
   mounted () {
-    console.log('mounted');
+    document.body.style.backgroundColor = '#fff';
     this.setTitle('Details');
-    console.log(this.$route.params);
     const {
       notificationId,
       title,
       template,
     } = this.$route.params;
-    console.log(notificationId, title, template);
+    this.notificationId = notificationId;
+    this.title = title;
+    this.template = template;
+  },
+  destroyed () {
+    document.body.style.backgroundColor = '#f6f6f6';
   },
   methods: {
     ...mapMutations([
@@ -34,7 +39,6 @@ export default {
 
 <style lang="scss">
 .notification-detail {
-  height: 100%;
   background: #fff;
   padding: rem-calc(36, 320) rem-calc(24, 320);
   .detail-title {

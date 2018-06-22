@@ -1,9 +1,11 @@
 <template>
   <div class="notification-list">
-    <ul class="list">
+    <ul class="list" v-if="notificationList.length > 0">
       <li v-for="item in notificationList" :key="item.notificationId">
         <div class="datetime">{{ item.effectiveAt }}</div>
-        <div @click="goToDetail(item.notificationId, item.title, item.template)" class="text-card">
+        <div
+          @click="goToDetail(item.notificationId, item.title, item.template)"
+          class="text-card">
           <div class="left">
             <div class="title">{{ item.title }}</div>
             <div class="content-abstract">{{ item.template | textify }}</div>
@@ -12,41 +14,65 @@
         </div>
       </li>
     </ul>
+    <Empty v-else emptyType="NoticeListEmpty" tipText='<p>You do not have any notification.</p>' />
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations } from 'vuex';
+import Empty from '../../../oriente-ui/Empty';
+console.log(123);
+console.log(Empty);
 export default {
   data () {
     return {
       notificationList: [
-        {
-          'notificationId': 1,
-          'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
-          'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
-          'effectiveAt': 'Jun 23,1998 23:59'
-        },
-        {
-          'notificationId': 2,
-          'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
-          'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up a</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
-          'effectiveAt': 'Jun 23,1998 23:59'
-        },
-        {
-          'notificationId': 3,
-          'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
-          'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
-          'effectiveAt': 'Jun 23,1998 23:59'
-        }
+        // {
+        //   'notificationId': 1,
+        //   'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+        //   'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+        //   'effectiveAt': 'Jun 23,1998 23:59'
+        // },
+        // {
+        //   'notificationId': 2,
+        //   'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+        //   'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up a</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+        //   'effectiveAt': 'Jun 23,1998 23:59'
+        // },
+        // {
+        //   'notificationId': 3,
+        //   'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+        //   'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+        //   'effectiveAt': 'Jun 23,1998 23:59'
+        // },
+        // {
+        //   'notificationId': 4,
+        //   'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+        //   'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+        //   'effectiveAt': 'Jun 23,1998 23:59'
+        // },
+        // {
+        //   'notificationId': 5,
+        //   'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+        //   'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up a</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+        //   'effectiveAt': 'Jun 23,1998 23:59'
+        // },
+        // {
+        //   'notificationId': 6,
+        //   'title': 'Tfpny Rnkr Scimxvlj Fvuixi Wlrwcma Bvyoplqr Ztbajsyc Srnxwosgr',
+        //   'template': '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+        //   'effectiveAt': 'Jun 23,1998 23:59'
+        // }
       ]
     }
+  },
+  components: {
+    Empty,
   },
   filters: {
     textify: function (html) {
       var box = document.createElement('div');
       box.innerHTML = html;
-      console.log(box.innerText);
       return box.innerText;
     }
   },
@@ -67,7 +93,6 @@ export default {
     },
     fetchData () {
       console.log('fetch data.');
-      console.log(this);
       // this.$cordova.axios.get('http://mock.oriente.com:3000/msgList')
       //   .then(res => {
       //     console.log(res);
@@ -82,8 +107,6 @@ export default {
 
 <style lang="scss" scoped>
 .notification-list {
-  height: 100%;
-
   ul.list {
     margin: 0;
     padding: 0 0 rem-calc(30, 320) 0;
