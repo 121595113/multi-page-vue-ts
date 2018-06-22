@@ -181,7 +181,7 @@ export default {
 .landing-how .title p{
   color: rgba(0,0,0,.8);
   letter-spacing: 0;
-  font-size: rem-calc(36);
+  font-size: rem-calc(18, 320);
   font-weight: bold;
   margin-left: rem-calc(4);
   margin-bottom: rem-calc(32);
@@ -213,7 +213,7 @@ export default {
   margin: 0 auto;
 }
 .line2{
-  height: rem-calc(210);
+  height: rem-calc(280);
 }
 .steText{
   overflow: hidden;
@@ -230,14 +230,14 @@ export default {
   margin-bottom: 5.56%;
 }
 .stePub h4{
-  font-size: rem-calc(32);
+  font-size: rem-calc(16, 320);
   color: #000;
   line-height:rem-calc(32);
 }
 .stePub p{
-  font-size: rem-calc(24);
+  font-size: rem-calc(12, 320);
   color: #888;
-  line-height: rem-calc(32);
+  line-height: rem-calc(16, 320);
   padding-bottom: rem-calc(32);
   padding-top: rem-calc(12);
 }
@@ -249,7 +249,7 @@ export default {
 }
 .remarks p{
   color:rgba(0, 0, 0, 0.3);
-  font-size:rem-calc(24);
+  font-size:rem-calc(12, 320);
   line-height: rem-calc(36);
   margin-bottom:rem-calc(24);
 }
