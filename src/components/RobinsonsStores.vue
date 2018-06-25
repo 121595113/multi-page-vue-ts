@@ -74,7 +74,7 @@ export default {
     .storeslist{
       overflow: hidden;
       width: 100%;
-      padding: 5% 0 0 0;
+      padding: 7% 0 0 0;
       position: relative;
 
       h4 {

@@ -53,7 +53,7 @@ export default {
   name: 'landingpage',
   data () {
     return {
-      title: 'Cashcart',
+      title: 'Cashacart',
       requesting: false
     }
   },
@@ -233,6 +233,7 @@ export default {
   font-size: rem-calc(16, 320);
   color: #000;
   line-height:rem-calc(32);
+  font-weight: normal;
 }
 .stePub p{
   font-size: rem-calc(12, 320);
