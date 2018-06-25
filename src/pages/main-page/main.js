@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 // import '@/common/i18n'
 import 'lib-flexible'
+import 'promise-polyfill/src/polyfill'
 import '@/common/globalComponent'
 import Vue from 'vue'
 import App from './App'

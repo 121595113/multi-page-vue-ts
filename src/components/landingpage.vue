@@ -27,15 +27,15 @@
         <div class="steText">
           <div class="stePub steBottom">
             <h4>Today</h4>
-            <p>Apply for a loan on Cashalo.</p>
+            <p>Apply for a loan on the Cashalo app & pay for your shopping on installment.</p>
           </div>
           <div class="stePub steBottom">
-            <h4>Within 1 to 3 Business Days</h4>
-            <p>When your loan is successful, the money will be transferred to your bank account and interest accrual starts.</p>
+            <h4>Within 10 Minutes***</h4>
+            <p>When your loan is approved, proceed to the counter with your Cashalo representative to finish your purchase. Cashalo will remit your approved loan amount directly to the participating store.</p>
           </div>
           <div class="stePub">
-            <h4>Before Due Date</h4>
-            <p>Pay back loan via the Cashalo App.</p>
+            <h4>On or Before Due Date</h4>
+            <p>Pay back your loan by installment via the Cashalo app.</p>
           </div>
         </div>
       </div>
@@ -53,19 +53,22 @@ export default {
   name: 'landingpage',
   data () {
     return {
-      title: 'Installment Buying',
-      url: '',
+      title: 'Cashacart',
       requesting: false
     }
   },
   mounted () {
     isNative && this.$cordova.on('deviceready', () => {
+      // 从native获取数据
       window.fetchDataFromNative && window.fetchDataFromNative()
-    })
-    isNative && window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
-      this.$cordova.router.push({
-        path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+      // 定制apply for a loan to buy按钮事件回调
+      window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
+        this.$cordova.router.push({
+          path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+        })
       })
+      // 打点统计
+      window.track.screen('consumer_finance_land')
     })
   },
   methods: {
@@ -74,6 +77,11 @@ export default {
     },
     gobuy () {
       if (this.requesting) return
+      // 打点统计
+      window.track.event('click_button', {
+        screen_name: 'consumer_finance_land',
+        element_id: 'ApplyNow'
+      })
       let status = window.localStorage.getItem('verify')
       if (!status || !isNative) return
       let that = this
@@ -90,8 +98,14 @@ export default {
               })
             }
             if (res.data.funding === 1) {
+              // 打点统计
+              window.track.event('show_notice', {
+                screen_name: 'consumer_finance_land',
+                notice_name: 'outstanding_loan'
+              })
+
               AlertModule.show({
-                content: 'You have an outstanding loan. You may borrow again once this loan has been paid.'
+                content: 'You have an outstanding loan. You<br>may borrow again once this loan<br>has been paid.'
               })
             }
           })
@@ -167,7 +181,8 @@ export default {
 .landing-how .title p{
   color: rgba(0,0,0,.8);
   letter-spacing: 0;
-  font-size: rem-calc(36);
+  font-size: rem-calc(18, 320);
+  font-weight: bold;
   margin-left: rem-calc(4);
   margin-bottom: rem-calc(32);
   line-height: rem-calc(56);
@@ -189,7 +204,7 @@ export default {
   vertical-align: bottom;
 }
 .line1{
-  height: rem-calc(80);
+  height: rem-calc(110);
 }
 .line1, .line2{
   width: 2px;
@@ -198,7 +213,7 @@ export default {
   margin: 0 auto;
 }
 .line2{
-  height: rem-calc(152);
+  height: rem-calc(280);
 }
 .steText{
   overflow: hidden;
@@ -215,14 +230,15 @@ export default {
   margin-bottom: 5.56%;
 }
 .stePub h4{
-  font-size: rem-calc(32);
+  font-size: rem-calc(16, 320);
   color: #000;
   line-height:rem-calc(32);
+  font-weight: normal;
 }
 .stePub p{
-  font-size: rem-calc(24);
+  font-size: rem-calc(12, 320);
   color: #888;
-  line-height: rem-calc(32);
+  line-height: rem-calc(16, 320);
   padding-bottom: rem-calc(32);
   padding-top: rem-calc(12);
 }
@@ -234,7 +250,7 @@ export default {
 }
 .remarks p{
   color:rgba(0, 0, 0, 0.3);
-  font-size:rem-calc(24);
+  font-size:rem-calc(12, 320);
   line-height: rem-calc(36);
   margin-bottom:rem-calc(24);
 }
