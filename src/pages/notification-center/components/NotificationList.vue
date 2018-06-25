@@ -80,12 +80,20 @@ export default {
     this.fetchData();
   },
   methods: {
+    guid () {
+      function S4 () {
+        // eslint-disable-next-line
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+      }
+      // eslint-disable-next-line
+      return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    },
     handleBottomChange (status) {
       console.log('handleBottomChange ', status);
       this.bottomStatus = status;
     },
     loadBottom () {
-
+      this.fetchData();
       // const that = this;
       // setTimeout(() => {
       //   let lastValue = that.notificationList.length;
@@ -118,9 +126,11 @@ export default {
     },
     fetchData () {
       if (isNative) {
-        this.$cordova.axios.get('/notification/{msgId}/{pageSize}')
+        const msgId = -1;
+        const pageSize = 10;
+        this.$cordova.axios.get(`/notification/${msgId}/${pageSize}`)
           .then(res => {
-
+            console.log(res);
           })
           .catch(err => {
             console.log(err);
@@ -134,12 +144,13 @@ export default {
             if (result.length > 0) {
               result.forEach((item, index) => {
                 that.notificationList.push({
-                  notificationId: index,
+                  notificationId: that.guid(),
                   title: item.title,
                   template: item.template,
                   effectiveAt: item.effectiveAt,
                 });
               });
+              this.$refs.loadmore.onBottomLoaded();
             } else {
               this.allLoaded = true;
             }
