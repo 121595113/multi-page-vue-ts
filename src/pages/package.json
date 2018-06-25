@@ -5,6 +5,7 @@
   "author": "TaoYu <121595113@qq.com>",
   "license": "ISC",
   "router-mapping": {
-    "mainPage": "main-page"
+    "mainPage": "main-page",
+    "transactionList": "transaction-list"
   }
 }
