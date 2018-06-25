@@ -17,9 +17,10 @@
   },
   "dependencies": {
     "archiver": "^2.1.1",
+    "axios": "^0.18.0",
     "json-loader": "^0.5.7",
-    "mint-ui": "^2.2.13",
     "lib-flexible": "^0.3.2",
+    "mint-ui": "^2.2.13",
     "normalize.css": "^8.0.0",
     "oriente-vue-cordova": "0.0.7",
     "vue": "^2.5.2",

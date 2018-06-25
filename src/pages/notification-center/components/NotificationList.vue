@@ -33,9 +33,11 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import { Loadmore, Spinner } from 'mint-ui';
+import { Loadmore, Spinner, Toast } from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import Empty from '../../../oriente-ui/Empty';
+import { isNative } from '@/utils/ua.js';
+import axios from 'axios';
 export default {
   data () {
     return {
@@ -51,6 +53,7 @@ export default {
   },
   components: {
     Empty,
+    Toast,
     'mt-spinner': Spinner, // 或者使用 Vue.component(Spinner.name, Spinner) 注册组件
     'mt-loadmore': Loadmore,
   },
@@ -62,14 +65,14 @@ export default {
     }
   },
   created () {
-    for (let i = 0; i < 2; i++) {
-      this.notificationList.push({
-        notificationId: i,
-        title: 'This is Title',
-        template: '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
-        effectiveAt: 'Jun 23,1998 23:59',
-      });
-    }
+    // for (let i = 0; i < 2; i++) {
+    //   this.notificationList.push({
+    //     notificationId: i,
+    //     title: 'This is Title',
+    //     template: '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+    //     effectiveAt: 'Jun 23,1998 23:59',
+    //   });
+    // }
   },
   mounted () {
     this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
@@ -82,24 +85,26 @@ export default {
       this.bottomStatus = status;
     },
     loadBottom () {
-      const that = this;
-      setTimeout(() => {
-        let lastValue = that.notificationList.length;
-        if (lastValue <= 6) {
-          for (let i = 1; i <= 1; i++) {
-            that.notificationList.push({
-              notificationId: (+new Date() + i * 100),
-              title: 'This is Title This is Title',
-              template: '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
-              effectiveAt: 'Jun 23,1998 23:59',
-            });
-          }
-        } else {
-          this.allLoaded = true; // 若数据已全部获取完毕
-        }
-        this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
-        console.log('loadBottom end, this.allLoaded = ', this.allLoaded);
-      }, 1500);
+
+      // const that = this;
+      // setTimeout(() => {
+      //   let lastValue = that.notificationList.length;
+      //   if (lastValue <= 6) {
+      //     for (let i = 1; i <= 1; i++) {
+      //       that.notificationList.push({
+      //         notificationId: (+new Date() + i * 100),
+      //         title: 'This is Title This is Title',
+      //         template: '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
+      //         effectiveAt: 'Jun 23,1998 23:59',
+      //       });
+      //     }
+      //   } else {
+      //     Toast('no more contents');
+      //     this.allLoaded = true; // 若数据已全部获取完毕
+      //   }
+      //   this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
+      //   console.log('loadBottom end, this.allLoaded = ', this.allLoaded);
+      // }, 1500);
     },
     goToDetail (notificationId, title, template) {
       this.$router.push({
@@ -112,11 +117,37 @@ export default {
       });
     },
     fetchData () {
-      console.log('fetch data.');
-      // this.$cordova.axios.get('http://mock.oriente.com:3000/msgList')
-      //   .then(res => {
-      //     console.log(res);
-      //   })
+      if (isNative) {
+        this.$cordova.axios.get('/notification/{msgId}/{pageSize}')
+          .then(res => {
+
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        const that = this;
+        axios.get('http://192.168.12.12:3000/msgList')
+          .then((res) => {
+            const result = res.data.data;
+            console.log(result);
+            if (result.length > 0) {
+              result.forEach((item, index) => {
+                that.notificationList.push({
+                  notificationId: index,
+                  title: item.title,
+                  template: item.template,
+                  effectiveAt: item.effectiveAt,
+                });
+              });
+            } else {
+              this.allLoaded = true;
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      }
     },
     ...mapMutations([
       'setTitle'
