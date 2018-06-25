@@ -23,6 +23,7 @@
     "mint-ui": "^2.2.13",
     "normalize.css": "^8.0.0",
     "oriente-vue-cordova": "0.0.7",
+    "promise-polyfill": "8.0.0",
     "vue": "^2.5.2",
     "vue-cordova": "^0.1.2",
     "vue-router": "^3.0.1",
