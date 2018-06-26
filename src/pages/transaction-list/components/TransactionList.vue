@@ -30,7 +30,10 @@
       </ul>
       <Empty v-else emptyType="TransactionListEmpty" tipText='<p>You do not have any transaction.</p>' />
       <div slot="top" class="mint-loadmore-top">
-        <span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">↓</span>
+        <span
+          v-show="topStatus !== 'loading'"
+          :class="['loadimg', topStatus === 'drop' ? 'is-rotate' : '']"
+        ></span>
         <span v-show="topStatus !== 'loading'" v-if="topStatus != 'drop'"> Pull down</span><span v-show="topStatus !== 'loading'" v-else> Release</span>
         <span v-show="topStatus === 'loading'">
           <mt-spinner type="fading-circle"></mt-spinner>
@@ -175,12 +178,21 @@ export default {
 }
 .mint-loadmore-top {
   span {
+    font-size: rem-calc(12, 360);
+    color: rgba(0,0,0,0.50);
     display: inline-block;
     transition: .2s linear;
     vertical-align: middle;
   }
   span.is-rotate {
-    transform: rotate(180deg);
+    transform: scale(0.6) rotate(180deg);
+  }
+  .loadimg {
+    background-image: url('../../../assets/images/common_loading_down@2x.png');
+    width: rem-calc(48, 360);
+    height: rem-calc(48, 360);
+    background-size: cover;
+    transform: scale(0.6);
   }
 }
 .mint-loadmore-bottom {
@@ -189,8 +201,8 @@ export default {
     transition: .2s linear;
     vertical-align: middle;
     }
-    span.is-rotate {
-      transform: rotate(180deg);
-    }
+  span.is-rotate {
+    transform: rotate(180deg);
+  }
 }
 </style>
