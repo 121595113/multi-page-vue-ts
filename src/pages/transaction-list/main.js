@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import 'lib-flexible'
+import '@/common/globalComponent';
 import App from './App'
 import router from './router'
 import VueCordova from 'oriente-vue-cordova'
 import { isAndroid } from '@/utils/ua.js'
+import store from '../../store/header';
 
 Vue.use(VueCordova)
 
@@ -21,6 +23,7 @@ if (window.location.protocol === 'file:' || window.location.port === '8080') {
 let vm = new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
 

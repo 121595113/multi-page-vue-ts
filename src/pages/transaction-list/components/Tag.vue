@@ -7,7 +7,6 @@ export default {
   props: {
     type: {
       required: true,
-      // default: 'world.',
     }
   },
   data () {
@@ -28,12 +27,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+span {
+  width: rem-calc(64, 360);
+  display: inline-block;
+  box-sizing: content-box;
+  text-align: center;
+}
 .disburment {
-  font-size: 10px;
+  font-size: rem-calc(10, 360);
   color: #FF8010;
   background: #FFF5DB;
-  border-radius: 25px;
-  padding: 4px 10px;
+  border-radius: rem-calc(25, 360);
+  padding: rem-calc(4, 360) rem-calc(10, 360);
 }
 
 .payment {
