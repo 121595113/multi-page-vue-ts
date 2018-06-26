@@ -4,6 +4,7 @@
     <img v-else-if="emptyType === 'BadNetwork'" src="../assets/images/empty_bg_network@2x.png" alt="" />
     <img v-else-if="emptyType === 'SystemFail'" src="../assets/images/empty_bg_system@2x.png" alt="" />
     <img v-else-if="emptyType === 'NoticeListEmpty'" src="../assets/images/empty_bg_notice@2x.png" alt="" />
+    <img v-else-if="emptyType === 'TransactionListEmpty'" src="../assets/images/empty_bg_transaction@2x.png" alt="" />
     <div class="text" v-html="tipText"></div>
   </div>
 </template>

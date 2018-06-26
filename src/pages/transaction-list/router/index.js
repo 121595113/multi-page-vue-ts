@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Transactions from '../components/Transactions';
+import TransactionList from '../components/TransactionList';
 Vue.use(Router)
 
 export default new Router({
@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'list',
-      component: Transactions
+      component: TransactionList
     }
   ]
 })
