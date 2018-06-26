@@ -6,6 +6,7 @@
   "license": "ISC",
   "router-mapping": {
     "mainPage": "main-page",
-    "notificationCenter": "notification-center"
+    "notificationCenter": "notification-center",
+    "transactionList": "transaction-list"
   }
 }
