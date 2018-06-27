@@ -6,8 +6,12 @@
   >
     <mt-loadmore
       ref="loadmore"
+      :auto-fill="false"
       :top-method="loadTop"
       @top-status-change="handleTopChange"
+      :bottom-method="loadBottom"
+      @bottom-status-change="handleBottomChange"
+      :bottom-all-loaded="allLoaded"
     >
       <ul v-if="transactionList.length > 0">
         <li
@@ -34,10 +38,24 @@
           v-show="topStatus !== 'loading'"
           :class="['loadimg', topStatus === 'drop' ? 'is-rotate' : '']"
         ></span>
-        <span v-show="topStatus !== 'loading'" v-if="topStatus != 'drop'"> Pull down</span><span v-show="topStatus !== 'loading'" v-else> Release</span>
-        <span v-show="topStatus === 'loading'">
+        <span class="loading-circle"  v-show="topStatus === 'loading'">
           <mt-spinner type="fading-circle"></mt-spinner>
         </span>
+        <span v-if="topStatus === 'pull'"> Pull down</span>
+        <span v-else-if="topStatus === 'drop'"> Release</span>
+        <span v-else-if="topStatus === 'loading'"> Loading</span>
+      </div>
+      <div slot="bottom" class="mint-loadmore-bottom">
+        <span
+          v-show="bottomStatus !== 'loading'"
+          :class="['loadimg', bottomStatus === 'drop' ? 'is-rotate' : '']"
+        ></span>
+        <span class="loading-circle" v-show="bottomStatus === 'loading'">
+          <mt-spinner type="fading-circle"></mt-spinner>
+        </span>
+        <span v-if="bottomStatus === 'pull'"> Pull up</span>
+        <span v-else-if="bottomStatus === 'drop'"> Release</span>
+        <span v-else-if="bottomStatus === 'loading'"> Loading</span>
       </div>
     </mt-loadmore>
   </div>
@@ -54,8 +72,24 @@ export default {
   data () {
     return {
       topStatus: '',
+      bottomStatus: '',
+      allLoaded: false,
       wrapperHeight: 0,
       transactionList: [
+        {
+          amount: '₱50,888.00',
+          transactionAt: 'May 10, 2018 12:24',
+          transactionType: 'disburment',
+          transactionParty: 'To ICBC ending 4563',
+          loanOrderNo: '8988898009',
+        },
+        {
+          amount: '₱388.00',
+          transactionAt: 'May 10, 2018 12:24',
+          transactionType: 'payment',
+          transactionParty: 'Via online bank of China',
+          loanOrderNo: '8988898009',
+        },
         {
           amount: '₱50,888.00',
           transactionAt: 'May 10, 2018 12:24',
@@ -109,6 +143,12 @@ export default {
         this.$refs.loadmore.onTopLoaded();
       }, 2000);
     },
+    loadBottom () {
+      setTimeout(() => {
+        // this.allLoaded = true; // 若数据已全部获取完毕
+        this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
+      }, 1500);
+    },
     handleTopChange (status) {
       console.log(status);
       this.topStatus = status;
@@ -116,6 +156,9 @@ export default {
     ...mapMutations([
       'setTitle'
     ]),
+    handleBottomChange (status) {
+      this.bottomStatus = status;
+    },
   }
 }
 </script>
@@ -194,15 +237,30 @@ export default {
     background-size: cover;
     transform: scale(0.6);
   }
+  .loading-circle {
+    margin-right: rem-calc(8, 360);
+  }
 }
 .mint-loadmore-bottom {
   span {
+    font-size: rem-calc(12, 360);
+    color: rgba(0,0,0,0.50);
     display: inline-block;
     transition: .2s linear;
     vertical-align: middle;
-    }
+  }
   span.is-rotate {
-    transform: rotate(180deg);
+    transform: scale(0.6) rotate(180deg);
+  }
+  .loadimg {
+    background-image: url('../../../assets/images/common_loading_up@2x.png');
+    width: rem-calc(48, 360);
+    height: rem-calc(48, 360);
+    background-size: cover;
+    transform: scale(0.6);
+  }
+  .loading-circle {
+    margin-right: rem-calc(10, 360);
   }
 }
 </style>
