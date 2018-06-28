@@ -29,7 +29,7 @@ export default {
     ]),
   },
   methods: {
-    onBack (e) {
+    onBack () {
       const currentPath = this.$router.currentRoute.path;
       console.log(currentPath);
       if (currentPath === '/list' || currentPath === '/') {

@@ -53,7 +53,6 @@ import axios from 'axios';
 export default {
   data () {
     return {
-      showGlobalLoading: true,
       isRequest: false,
       bottomStatus: '',
       wrapperHeight: 0,
@@ -116,7 +115,6 @@ export default {
           .then(res => {
             this.isRequest = true;
             this.setLoadingStatus(false);
-            this.setTitle('Notifications');
             const result = res.data;
             if (result.length > 0) {
               result.forEach((item, index) => {

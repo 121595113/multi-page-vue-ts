@@ -42,7 +42,7 @@ span {
 }
 
 .payment {
-  font-size: 10px;
+  font-size: rem-calc(10, 360);
   color: #71B853;
   background: #DEF7D3;
   border-radius: 25px;

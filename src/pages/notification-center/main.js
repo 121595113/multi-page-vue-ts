@@ -4,14 +4,14 @@ import '@/common/globalComponent';
 import App from './App';
 import router from './router';
 import VueCordova from 'oriente-vue-cordova';
-import { isAndroid } from '@/utils/ua.js';
+import { isNative, isAndroid } from '@/utils/ua.js';
 import store from '../../store/header';
 Vue.use(VueCordova);
 
 Vue.config.productionTip = false
 
 // add cordova.js only if serving the app through file://
-if (window.location.protocol === 'file:' || window.location.port === '8080') {
+if (isNative && (window.location.protocol === 'file:' || window.location.port === '8080')) {
   var cordovaScript = document.createElement('script')
   cordovaScript.setAttribute('type', 'text/javascript')
   cordovaScript.setAttribute('src', `../cordova-${isAndroid ? 'android' : 'ios'}.js`)

@@ -66,6 +66,8 @@ import { mapMutations } from 'vuex';
 import Tag from './Tag';
 import AmountDisplay from './AmountDisplay';
 import Empty from '../../../oriente-ui/Empty';
+import { isNative } from '@/utils/ua.js';
+import axios from 'axios';
 import { Loadmore, Spinner, Toast } from 'mint-ui';
 import 'mint-ui/lib/style.css';
 export default {
@@ -75,50 +77,7 @@ export default {
       bottomStatus: '',
       allLoaded: false,
       wrapperHeight: 0,
-      transactionList: [
-        {
-          amount: '₱50,888.00',
-          transactionAt: 'May 10, 2018 12:24',
-          transactionType: 'disburment',
-          transactionParty: 'To ICBC ending 4563',
-          loanOrderNo: '8988898009',
-        },
-        {
-          amount: '₱388.00',
-          transactionAt: 'May 10, 2018 12:24',
-          transactionType: 'payment',
-          transactionParty: 'Via online bank of China',
-          loanOrderNo: '8988898009',
-        },
-        {
-          amount: '₱50,888.00',
-          transactionAt: 'May 10, 2018 12:24',
-          transactionType: 'disburment',
-          transactionParty: 'To ICBC ending 4563',
-          loanOrderNo: '8988898009',
-        },
-        {
-          amount: '₱388.00',
-          transactionAt: 'May 10, 2018 12:24',
-          transactionType: 'payment',
-          transactionParty: 'Via online bank of China',
-          loanOrderNo: '8988898009',
-        },
-        {
-          amount: '₱50,888.00',
-          transactionAt: 'May 10, 2018 12:24',
-          transactionType: 'disburment',
-          transactionParty: 'To ICBC ending 4563',
-          loanOrderNo: '8988898009',
-        },
-        {
-          amount: '₱388.00',
-          transactionAt: 'May 10, 2018 12:24',
-          transactionType: 'payment',
-          transactionParty: 'Via online bank of China',
-          loanOrderNo: '8988898009',
-        },
-      ],
+      transactionList: [],
     }
   },
   components: {
@@ -129,11 +88,77 @@ export default {
     'mt-loadmore': Loadmore,
     Toast,
   },
+  created () {
+    if (isNative) {
+      this.$cordova.on('deviceready', () => {
+        this.setLoadingStatus(true);
+        this.fetchData();
+      })
+    } else {
+      this.fetchData();
+    }
+  },
   mounted () {
     this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
     this.setTitle('Transactions');
   },
   methods: {
+    fetchData () {
+      if (isNative) {
+        const pageNo = -1;
+        const pageSize = 10;
+        const that = this;
+        this.$cordova.axios.get(`/loan/capital/${pageNo}/${pageSize}`)
+          .then(res => {
+            console.log(res);
+            const data = res.data;
+            if (data.length > 0) {
+              data.forEach((item, index) => {
+                that.transactionList.push({
+                  amount: item.amount,
+                  transactionAt: item.transactionAt,
+                  transactionType: item.transactionType,
+                  transactionParty: item.transactionParty,
+                  loanOrderNo: item.loanOrderNo,
+                });
+              });
+            } else {
+              this.allLoaded = true;
+            }
+          })
+          .catch(err => {
+            this.isRequest = true;
+            this.setLoadingStatus(false);
+            console.log(err);
+          });
+      } else {
+        const that = this;
+        axios.get('http://192.168.12.12:3000/capitalList')
+          .then((res) => {
+            this.isRequest = true;
+            this.setLoadingStatus(false);
+            console.log(res);
+            const result = res.data.data;
+            if (result.length > 0) {
+              result.forEach((item, index) => {
+                that.transactionList.push({
+                  amount: item.amount,
+                  transactionAt: item.transactionAt,
+                  transactionType: item.transactionType,
+                  transactionParty: item.transactionParty,
+                  loanOrderNo: item.loanOrderNo,
+                });
+              });
+              this.$refs.loadmore.onBottomLoaded();
+            } else {
+              this.allLoaded = true;
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+    },
     loadTop () {
       setTimeout(() => {
         // let firstValue = this.list[0];
@@ -150,15 +175,15 @@ export default {
       }, 1500);
     },
     handleTopChange (status) {
-      console.log(status);
       this.topStatus = status;
     },
-    ...mapMutations([
-      'setTitle'
-    ]),
     handleBottomChange (status) {
       this.bottomStatus = status;
     },
+    ...mapMutations([
+      'setTitle',
+      'setLoadingStatus',
+    ]),
   }
 }
 </script>
@@ -183,13 +208,13 @@ export default {
       flex: 1;
       margin: 0 rem-calc(16, 360);
       .transaction-at {
-        font-size: 12px;
+        font-size: rem-calc(12, 360);
         color: rgba(0,0,0,0.80);
         line-height: rem-calc(16, 360);
         padding-bottom: rem-calc(4, 360);
       }
       .transaction-party, .loan-no {
-        font-size: 12px;
+        font-size: rem-calc(12, 360);
         color: rgba(0,0,0,0.30);
         line-height: rem-calc(16, 360);
       }

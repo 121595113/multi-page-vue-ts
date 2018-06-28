@@ -2,7 +2,7 @@
   <div id="app">
     <x-header
       class="title-box"
-      @on-click-back="$router.back()"
+      @on-click-back="onBack"
       :left-options="{backText: '',preventGoBack: true}">
         {{title}}
     </x-header>
@@ -13,6 +13,7 @@
 <script>
 import { XHeader } from 'vux';
 import { mapState } from 'vuex';
+import { isNative } from '@/utils/ua.js';
 export default {
   name: 'App',
   components: {
@@ -26,7 +27,20 @@ export default {
     ...mapState([
       'title'
     ]),
-  }
+  },
+  methods: {
+    onBack () {
+      const currentPath = this.$router.currentRoute.path;
+      console.log(currentPath);
+      if (currentPath === '/') {
+        if (isNative) {
+          this.$cordova.router.back();
+        }
+      } else {
+        this.$router.back();
+      }
+    }
+  },
 }
 </script>
 
