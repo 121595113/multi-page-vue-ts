@@ -9,28 +9,30 @@
         @bottom-status-change="handleBottomChange"
         :auto-fill="false"
         ref="loadmore">
-      <ul class="list" v-if="notificationList.length > 0">
-        <li v-for="item in notificationList" :key="item.notificationId">
-          <div class="datetime">{{ item.effectiveAt }}</div>
-          <div
-            @click="goToDetail(item.notificationId, item.title, item.template)"
-            class="text-card">
-            <div class="left">
-              <div class="title">{{ item.title }}</div>
-              <div class="content-abstract">{{ item.template | textify }}</div>
+      <template v-if="isRequest">
+        <ul class="list" v-if="notificationList.length > 0">
+          <li v-for="item in notificationList" :key="item.notificationId">
+            <div class="datetime">{{ item.effectiveAt }}</div>
+            <div
+              @click="goToDetail(item.notificationId, item.title, item.template)"
+              class="text-card">
+              <div class="left">
+                <div class="title">{{ item.title }}</div>
+                <div class="content-abstract">{{ item.template | textify }}</div>
+              </div>
+              <div class="right"></div>
             </div>
-            <div class="right"></div>
-          </div>
-        </li>
-      </ul>
-      <Empty v-else emptyType="NoticeListEmpty" tipText='<p>You do not have any notification.</p>' />
+          </li>
+        </ul>
+        <Empty v-else emptyType="NoticeListEmpty" tipText='<p>You do not have any notification.</p>' />
+      </template>
       <div slot="bottom" class="mint-loadmore-bottom">
         <span
           v-show="bottomStatus !== 'loading'"
           :class="['loadimg', bottomStatus === 'drop' ? 'is-rotate' : '']"
         ></span>
         <span class="loading-circle" v-show="bottomStatus === 'loading'">
-          <mt-spinner type="fading-circle"></mt-spinner>
+          <Spinner type="circles" />
         </span>
         <span v-if="bottomStatus === 'pull'"> Pull up</span>
         <span v-else-if="bottomStatus === 'drop'"> Release</span>
@@ -42,7 +44,8 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import { Loadmore, Spinner, Toast } from 'mint-ui';
+import { Loadmore, Toast } from 'mint-ui';
+import { Spinner } from 'vux';
 import 'mint-ui/lib/style.css';
 import Empty from '../../../oriente-ui/Empty';
 import { isNative } from '@/utils/ua.js';
@@ -50,6 +53,8 @@ import axios from 'axios';
 export default {
   data () {
     return {
+      showGlobalLoading: true,
+      isRequest: false,
       bottomStatus: '',
       wrapperHeight: 0,
       allLoaded: false,
@@ -57,10 +62,10 @@ export default {
     }
   },
   components: {
+    Spinner,
     Empty,
     Toast,
-    'mt-spinner': Spinner, // 或者使用 Vue.component(Spinner.name, Spinner) 注册组件
-    'mt-loadmore': Loadmore,
+    'mt-loadmore': Loadmore, // 或者使用 Vue.component(Loadmore.name, Loadmore) 注册组件
   },
   filters: {
     textify: function (html) {
@@ -72,6 +77,7 @@ export default {
   created () {
     if (isNative) {
       this.$cordova.on('deviceready', () => {
+        this.setLoadingStatus(true);
         this.fetchData();
       })
     } else {
@@ -81,45 +87,15 @@ export default {
   mounted () {
     this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
     this.setTitle('Notifications');
-    // window.addEventListener('on-click-back', (e) => {
-    //   console.log('from list back btn');
-    // });
-    // this.$on('on-click-back', function () {
-    //   alert('user');
-    // });
   },
   methods: {
-    onBack (e) {
-      console.log('list');
-    },
-    // goBack () {
-    //   console.log('goBack...');
-    //   isNative && this.$cordova.router.back();
-    // },
     handleBottomChange (status) {
       this.bottomStatus = status;
     },
     loadBottom () {
-      this.fetchData();
-      // const that = this;
-      // setTimeout(() => {
-      //   let lastValue = that.notificationList.length;
-      //   if (lastValue <= 6) {
-      //     for (let i = 1; i <= 1; i++) {
-      //       that.notificationList.push({
-      //         notificationId: (+new Date() + i * 100),
-      //         title: 'This is Title This is Title',
-      //         template: '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
-      //         effectiveAt: 'Jun 23,1998 23:59',
-      //       });
-      //     }
-      //   } else {
-      //     Toast('no more contents');
-      //     this.allLoaded = true; // 若数据已全部获取完毕
-      //   }
-      //   this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
-      //   console.log('loadBottom end, this.allLoaded = ', this.allLoaded);
-      // }, 1500);
+      setTimeout(() => {
+        this.fetchData();
+      }, 2000);
     },
     goToDetail (notificationId, title, template) {
       this.$router.push({
@@ -138,7 +114,9 @@ export default {
         const that = this;
         this.$cordova.axios.get(`/notification/${msgId}/${pageSize}`)
           .then(res => {
-            console.log(res);
+            this.isRequest = true;
+            this.setLoadingStatus(false);
+            this.setTitle('Notifications');
             const result = res.data;
             if (result.length > 0) {
               result.forEach((item, index) => {
@@ -155,14 +133,17 @@ export default {
             }
           })
           .catch(err => {
+            this.isRequest = true;
+            this.setLoadingStatus(false);
             console.log(err);
           });
       } else {
         const that = this;
         axios.get('http://192.168.12.12:3000/msgList')
           .then((res) => {
+            this.isRequest = true;
+            this.setLoadingStatus(false);
             const result = res.data.data;
-            console.log(result);
             if (result.length > 0) {
               result.forEach((item, index) => {
                 that.notificationList.push({
@@ -184,6 +165,7 @@ export default {
     },
     ...mapMutations([
       'setTitle',
+      'setLoadingStatus',
     ]),
   },
 }
@@ -262,12 +244,6 @@ export default {
   line-height: 50px;
   border-bottom: 1px solid #eee;
 }
-// .mint-loadmore-bottom {
-//   .mint-loadmore-text {
-//     font-size: 12px;
-//     color: rgba(0,0,0,0.50);
-//   }
-// }
 
 .mint-loadmore-bottom {
   span {
@@ -289,6 +265,10 @@ export default {
   }
   .loading-circle {
     margin-right: rem-calc(10, 360);
+    span.vux-spinner {
+      stroke: #bdbdbd;
+      fill: #bdbdbd;
+    }
   }
 }
 </style>
