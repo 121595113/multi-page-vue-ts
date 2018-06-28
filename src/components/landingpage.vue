@@ -63,8 +63,10 @@ export default {
       window.fetchDataFromNative && window.fetchDataFromNative()
       // 定制apply for a loan to buy按钮事件回调
       window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
-        this.$cordova.router.push({
-          path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+        window.fetchDataFromNative && window.fetchDataFromNative().then(() => {
+          this.$cordova.router.push({
+            path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+          })
         })
       })
       // 打点统计
