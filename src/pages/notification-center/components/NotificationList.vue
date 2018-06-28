@@ -8,9 +8,6 @@
         :bottom-all-loaded="allLoaded"
         @bottom-status-change="handleBottomChange"
         :auto-fill="false"
-        :bottomPullText="bottomPullText"
-        :bottomDropText="bottomDropText"
-        :bottomLoadingText="bottomLoadingText"
         ref="loadmore">
       <ul class="list" v-if="notificationList.length > 0">
         <li v-for="item in notificationList" :key="item.notificationId">
@@ -27,6 +24,18 @@
         </li>
       </ul>
       <Empty v-else emptyType="NoticeListEmpty" tipText='<p>You do not have any notification.</p>' />
+      <div slot="bottom" class="mint-loadmore-bottom">
+        <span
+          v-show="bottomStatus !== 'loading'"
+          :class="['loadimg', bottomStatus === 'drop' ? 'is-rotate' : '']"
+        ></span>
+        <span class="loading-circle" v-show="bottomStatus === 'loading'">
+          <mt-spinner type="fading-circle"></mt-spinner>
+        </span>
+        <span v-if="bottomStatus === 'pull'"> Pull up</span>
+        <span v-else-if="bottomStatus === 'drop'"> Release</span>
+        <span v-else-if="bottomStatus === 'loading'"> Loading</span>
+      </div>
     </mt-loadmore>
   </div>
 </template>
@@ -41,13 +50,9 @@ import axios from 'axios';
 export default {
   data () {
     return {
-      topStatus: '',
       bottomStatus: '',
       wrapperHeight: 0,
       allLoaded: false,
-      bottomPullText: '↑ Pull up',
-      bottomDropText: '↓ Release',
-      bottomLoadingText: 'Loading',
       notificationList: [],
     }
   },
@@ -65,31 +70,33 @@ export default {
     }
   },
   created () {
-    // for (let i = 0; i < 2; i++) {
-    //   this.notificationList.push({
-    //     notificationId: i,
-    //     title: 'This is Title',
-    //     template: '<p>Cashalo is <a href="http://m.baidu.com/">sign up b</a> on beta testing so we currently only have pre-approved users and partners on the platform. If you are interested in using Cashalo once we launch to the public, <a href="#">sign up</a>to get the latest updates.</p>',
-    //     effectiveAt: 'Jun 23,1998 23:59',
-    //   });
-    // }
+    if (isNative) {
+      this.$cordova.on('deviceready', () => {
+        this.fetchData();
+      })
+    } else {
+      this.fetchData();
+    }
   },
   mounted () {
     this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
     this.setTitle('Notifications');
-    this.fetchData();
+    // window.addEventListener('on-click-back', (e) => {
+    //   console.log('from list back btn');
+    // });
+    // this.$on('on-click-back', function () {
+    //   alert('user');
+    // });
   },
   methods: {
-    guid () {
-      function S4 () {
-        // eslint-disable-next-line
-        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-      }
-      // eslint-disable-next-line
-      return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    onBack (e) {
+      console.log('list');
     },
+    // goBack () {
+    //   console.log('goBack...');
+    //   isNative && this.$cordova.router.back();
+    // },
     handleBottomChange (status) {
-      console.log('handleBottomChange ', status);
       this.bottomStatus = status;
     },
     loadBottom () {
@@ -128,9 +135,24 @@ export default {
       if (isNative) {
         const msgId = -1;
         const pageSize = 10;
+        const that = this;
         this.$cordova.axios.get(`/notification/${msgId}/${pageSize}`)
           .then(res => {
             console.log(res);
+            const result = res.data;
+            if (result.length > 0) {
+              result.forEach((item, index) => {
+                that.notificationList.push({
+                  notificationId: item.notificationId,
+                  title: item.title,
+                  template: item.template,
+                  effectiveAt: item.effectiveAt,
+                });
+              });
+              this.$refs.loadmore.onBottomLoaded();
+            } else {
+              this.allLoaded = true;
+            }
           })
           .catch(err => {
             console.log(err);
@@ -144,7 +166,7 @@ export default {
             if (result.length > 0) {
               result.forEach((item, index) => {
                 that.notificationList.push({
-                  notificationId: that.guid(),
+                  notificationId: item.notificationId,
                   title: item.title,
                   template: item.template,
                   effectiveAt: item.effectiveAt,
@@ -161,7 +183,7 @@ export default {
       }
     },
     ...mapMutations([
-      'setTitle'
+      'setTitle',
     ]),
   },
 }
@@ -240,10 +262,33 @@ export default {
   line-height: 50px;
   border-bottom: 1px solid #eee;
 }
+// .mint-loadmore-bottom {
+//   .mint-loadmore-text {
+//     font-size: 12px;
+//     color: rgba(0,0,0,0.50);
+//   }
+// }
+
 .mint-loadmore-bottom {
-  .mint-loadmore-text {
-    font-size: 12px;
+  span {
+    font-size: rem-calc(12, 360);
     color: rgba(0,0,0,0.50);
+    display: inline-block;
+    transition: .2s linear;
+    vertical-align: middle;
+  }
+  span.is-rotate {
+    transform: scale(0.6) rotate(180deg);
+  }
+  .loadimg {
+    background-image: url('../../../assets/images/common_loading_up@2x.png');
+    width: rem-calc(48, 360);
+    height: rem-calc(48, 360);
+    background-size: cover;
+    transform: scale(0.6);
+  }
+  .loading-circle {
+    margin-right: rem-calc(10, 360);
   }
 }
 </style>

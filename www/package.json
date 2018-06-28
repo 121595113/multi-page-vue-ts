@@ -1,11 +1,12 @@
 {
   "name": "oriente-vue",
-  "version": "0.0.1",
+  "version": "1.2.0",
   "description": "A Vue.js project",
   "author": "TaoYu <121595113@qq.com>",
   "license": "ISC",
   "router-mapping": {
     "mainPage": "main-page",
-    "notificationCenter": "notification-center"
+    "notificationCenter": "notification-center",
+    "transactionList": "transaction-list"
   }
 }
