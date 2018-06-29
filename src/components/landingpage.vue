@@ -47,8 +47,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { isNative } from '@/utils/ua.js'
-import { AlertModule } from 'vux'
+import { AlertModule, ToastPlugin } from 'vux'
+Vue.use(ToastPlugin)
 export default {
   name: 'landingpage',
   data () {
@@ -112,6 +114,11 @@ export default {
             }
           })
           .catch(err => {
+            this.$vux.toast.show({
+              type: 'text',
+              width: '60%',
+              text: err.msg || 'an error occured, please try again later',
+            });
             console.error(err)
           })
           .finally(() => {
