@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import VueCordova from 'oriente-vue-cordova'
 import { isNative, isAndroid } from '@/utils/ua.js';
+import FastClick from 'fastclick';
 import store from '../../store/header';
 
 Vue.use(VueCordova)
@@ -26,6 +27,8 @@ let vm = new Vue({
   store,
   render: h => h(App)
 })
+
+FastClick.attach(document.body);
 
 router.beforeEach((to, from, next) => {
   let toApp = vm.$cordova.router && vm.$cordova.router.isNative(to.fullPath)
