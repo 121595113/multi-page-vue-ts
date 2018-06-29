@@ -92,9 +92,7 @@ export default {
       this.bottomStatus = status;
     },
     loadBottom () {
-      setTimeout(() => {
-        this.fetchData();
-      }, 2000);
+      this.fetchData();
     },
     goToDetail (notificationId, title, template) {
       this.$router.push({

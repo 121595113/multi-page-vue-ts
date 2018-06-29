@@ -7,6 +7,7 @@
         {{title}}
     </x-header>
     <router-view/>
+    <GlobalLoading :showLoading="isShowLoading" />
   </div>
 </template>
 
@@ -14,10 +15,12 @@
 import { XHeader } from 'vux';
 import { mapState } from 'vuex';
 import { isNative } from '@/utils/ua.js';
+import GlobalLoading from '../../oriente-ui/GlobalLoading';
 export default {
   name: 'App',
   components: {
     'x-header': XHeader,
+    GlobalLoading,
   },
   data () {
     return {
@@ -25,7 +28,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'title'
+      'title',
+      'isShowLoading',
     ]),
   },
   methods: {

@@ -13,26 +13,28 @@
       @bottom-status-change="handleBottomChange"
       :bottom-all-loaded="allLoaded"
     >
-      <ul v-if="transactionList.length > 0">
-        <li
-          class="cell vux-1px-b"
-          v-for="(item, index) in transactionList"
-          :key="index"
-        >
-          <div class="left">
-            <Tag :type="item.transactionType" />
-          </div>
-          <div class="content">
-            <div class="transaction-at">{{ item.transactionAt }}</div>
-            <div class="transaction-party">{{ item.transactionParty }}</div>
-            <div class="loan-no">Loan Application No. {{ item.loanOrderNo }}</div>
-          </div>
-          <div class="right">
-            <AmountDisplay :type="item.transactionType" :value="item.amount" />
-          </div>
-        </li>
-      </ul>
-      <Empty v-else emptyType="TransactionListEmpty" tipText='<p>You do not have any transaction.</p>' />
+      <template v-if="isRequest">
+        <ul v-if="transactionList.length > 0">
+          <li
+            class="cell vux-1px-b"
+            v-for="(item, index) in transactionList"
+            :key="index"
+          >
+            <div class="left">
+              <Tag :type="item.transactionType" />
+            </div>
+            <div class="content">
+              <div class="transaction-at">{{ item.transactionAt }}</div>
+              <div class="transaction-party">{{ item.transactionParty }}</div>
+              <div class="loan-no">Loan Application No. {{ item.loanOrderNo }}</div>
+            </div>
+            <div class="right">
+              <AmountDisplay :type="item.transactionType" :value="item.amount" />
+            </div>
+          </li>
+        </ul>
+        <Empty v-else emptyType="TransactionListEmpty" tipText='<p>You do not have any transaction.</p>' />
+      </template>
       <div slot="top" class="mint-loadmore-top">
         <span
           v-show="topStatus !== 'loading'"
@@ -73,6 +75,7 @@ import 'mint-ui/lib/style.css';
 export default {
   data () {
     return {
+      isRequest: false,
       topStatus: '',
       bottomStatus: '',
       allLoaded: false,
@@ -103,7 +106,7 @@ export default {
     this.setTitle('Transactions');
   },
   methods: {
-    fetchData () {
+    fetchData (from) {
       if (isNative) {
         const pageNo = -1;
         const pageSize = 10;
@@ -111,17 +114,24 @@ export default {
         this.$cordova.axios.get(`/loan/capital/${pageNo}/${pageSize}`)
           .then(res => {
             console.log(res);
+            this.isRequest = true;
+            this.setLoadingStatus(false);
             const data = res.data;
             if (data.length > 0) {
               data.forEach((item, index) => {
                 that.transactionList.push({
-                  amount: item.amount,
+                  amount: `₱${item.amount}`,
                   transactionAt: item.transactionAt,
                   transactionType: item.transactionType,
                   transactionParty: item.transactionParty,
                   loanOrderNo: item.loanOrderNo,
                 });
               });
+              if (from === 'top') {
+                this.$refs.loadmore.onTopLoaded();
+              } else {
+                this.$refs.loadmore.onBottomLoaded();
+              }
             } else {
               this.allLoaded = true;
             }
@@ -142,14 +152,18 @@ export default {
             if (result.length > 0) {
               result.forEach((item, index) => {
                 that.transactionList.push({
-                  amount: item.amount,
+                  amount: `₱${item.amount}`,
                   transactionAt: item.transactionAt,
                   transactionType: item.transactionType,
                   transactionParty: item.transactionParty,
                   loanOrderNo: item.loanOrderNo,
                 });
               });
-              this.$refs.loadmore.onBottomLoaded();
+              if (from === 'top') {
+                this.$refs.loadmore.onTopLoaded();
+              } else {
+                this.$refs.loadmore.onBottomLoaded();
+              }
             } else {
               this.allLoaded = true;
             }
@@ -160,19 +174,10 @@ export default {
       }
     },
     loadTop () {
-      setTimeout(() => {
-        // let firstValue = this.list[0];
-        // for (let i = 1; i <= 10; i++) {
-        //   this.list.unshift(firstValue - i);
-        // }
-        this.$refs.loadmore.onTopLoaded();
-      }, 2000);
+      this.fetchData('top');
     },
     loadBottom () {
-      setTimeout(() => {
-        // this.allLoaded = true; // 若数据已全部获取完毕
-        this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
-      }, 1500);
+      this.fetchData('bottom');
     },
     handleTopChange (status) {
       this.topStatus = status;
