@@ -58,6 +58,8 @@ export default {
       wrapperHeight: 0,
       allLoaded: false,
       notificationList: [],
+      lastMsgId: '-1',
+      pageSize: 10,
     }
   },
   components: {
@@ -85,6 +87,7 @@ export default {
   },
   mounted () {
     this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    window.scrollTo(0, 0);
     this.setTitle('Notifications');
   },
   methods: {
@@ -106,10 +109,10 @@ export default {
     },
     fetchData () {
       if (isNative) {
-        const msgId = -1;
-        const pageSize = 10;
+        console.log(this.lastMsgId);
+        console.log(this.pageSize);
         const that = this;
-        this.$cordova.axios.get(`/notification/${msgId}/${pageSize}`)
+        this.$cordova.axios.get(`/notification/${this.lastMsgId}/${this.pageSize}`)
           .then(res => {
             this.isRequest = true;
             this.setLoadingStatus(false);
@@ -123,7 +126,13 @@ export default {
                   effectiveAt: item.effectiveAt,
                 });
               });
+              this.lastMsgId = result[result.length - 1] && result[result.length - 1].notificationId;
               this.$refs.loadmore.onBottomLoaded();
+              if (result.length < this.pageSize) {
+                // last page
+                this.allLoaded = true;
+                console.log('No more updates');
+              }
             } else {
               this.allLoaded = true;
             }
@@ -131,10 +140,13 @@ export default {
           .catch(err => {
             this.isRequest = true;
             this.setLoadingStatus(false);
+            this.allLoaded = true;
             console.log(err);
           });
       } else {
         const that = this;
+        console.log(this.lastMsgId);
+        console.log(this.pageSize);
         axios.get('http://192.168.12.12:3000/msgList')
           .then((res) => {
             this.isRequest = true;
@@ -149,7 +161,13 @@ export default {
                   effectiveAt: item.effectiveAt,
                 });
               });
+              this.lastMsgId = result[result.length - 1] && result[result.length - 1].notificationId;
               this.$refs.loadmore.onBottomLoaded();
+              if (result.length < this.pageSize) {
+                // last page
+                this.allLoaded = true;
+                console.log('No more updates');
+              }
             } else {
               this.allLoaded = true;
             }

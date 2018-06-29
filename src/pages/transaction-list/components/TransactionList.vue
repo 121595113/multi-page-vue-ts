@@ -69,6 +69,7 @@ import Tag from './Tag';
 import AmountDisplay from './AmountDisplay';
 import Empty from '../../../oriente-ui/Empty';
 import { isNative } from '@/utils/ua.js';
+import { formatCurrency } from '@/utils/numeral.js';
 import axios from 'axios';
 import { Loadmore, Spinner, Toast } from 'mint-ui';
 import 'mint-ui/lib/style.css';
@@ -79,8 +80,11 @@ export default {
       topStatus: '',
       bottomStatus: '',
       allLoaded: false,
+      empty: false,
       wrapperHeight: 0,
       transactionList: [],
+      pageNo: 0,
+      pageSize: 10,
     }
   },
   components: {
@@ -108,31 +112,42 @@ export default {
   methods: {
     fetchData (from) {
       if (isNative) {
-        const pageNo = -1;
-        const pageSize = 10;
         const that = this;
-        this.$cordova.axios.get(`/loan/capital/${pageNo}/${pageSize}`)
+        this.$cordova.axios.get(`/loan/capital/${this.pageNo}/${this.pageSize}`)
           .then(res => {
             console.log(res);
             this.isRequest = true;
             this.setLoadingStatus(false);
-            const data = res.data;
-            if (data.length > 0) {
-              data.forEach((item, index) => {
-                that.transactionList.push({
-                  amount: `₱${item.amount}`,
+            const result = res.data;
+            if (result.length > 0) {
+              result.forEach((item, index) => {
+                const newObj = {
+                  amount: `₱${formatCurrency(item.amount)}`,
                   transactionAt: item.transactionAt,
                   transactionType: item.transactionType,
                   transactionParty: item.transactionParty,
                   loanOrderNo: item.loanOrderNo,
-                });
+                };
+                if (from === 'top') {
+                  that.transactionList.unshift(newObj);
+                } else {
+                  that.transactionList.push(newObj);
+                }
               });
               if (from === 'top') {
                 this.$refs.loadmore.onTopLoaded();
               } else {
+                this.pageNo++;
                 this.$refs.loadmore.onBottomLoaded();
               }
+              if (result.length < this.pageSize) {
+                // last page
+                this.allLoaded = true;
+                console.log('No more updates');
+              }
             } else {
+              this.empty = true;
+              this.$refs.loadmore.onTopLoaded();
               this.allLoaded = true;
             }
           })
@@ -151,18 +166,28 @@ export default {
             const result = res.data.data;
             if (result.length > 0) {
               result.forEach((item, index) => {
-                that.transactionList.push({
-                  amount: `₱${item.amount}`,
+                const newObj = {
+                  amount: `₱${formatCurrency(item.amount)}`,
                   transactionAt: item.transactionAt,
                   transactionType: item.transactionType,
                   transactionParty: item.transactionParty,
                   loanOrderNo: item.loanOrderNo,
-                });
+                };
+                if (from === 'top') {
+                  that.transactionList.unshift(newObj);
+                } else {
+                  that.transactionList.push(newObj);
+                }
               });
               if (from === 'top') {
                 this.$refs.loadmore.onTopLoaded();
               } else {
                 this.$refs.loadmore.onBottomLoaded();
+              }
+              if (result.length < this.pageSize) {
+                // last page
+                this.allLoaded = true;
+                console.log('No more updates');
               }
             } else {
               this.allLoaded = true;
@@ -174,7 +199,9 @@ export default {
       }
     },
     loadTop () {
-      this.fetchData('top');
+      if (this.empty !== true) {
+        this.fetchData('top');
+      }
     },
     loadBottom () {
       this.fetchData('bottom');
