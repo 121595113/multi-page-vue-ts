@@ -7,6 +7,7 @@ const store = new Vuex.Store({
   state: {
     title: 'Oriente',
     isShowLoading: true,
+    isShowEmptyView: false,
   },
   mutations: {
     setTitle (state, title) {
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
     },
     setLoadingStatus (state, status) {
       state.isShowLoading = status;
+    },
+    setEmptyViewStatus (state, status) {
+      state.isShowEmptyView = status;
     }
   }
 });

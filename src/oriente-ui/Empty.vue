@@ -1,5 +1,5 @@
 <template>
-  <div class="empty">
+  <div class="empty-component">
     <img v-if="emptyType === 'NoData'" src="../assets/images/empty_bg_system@2x.png" alt="" />
     <img v-else-if="emptyType === 'BadNetwork'" src="../assets/images/empty_bg_network@2x.png" alt="" />
     <img v-else-if="emptyType === 'SystemFail'" src="../assets/images/empty_bg_system@2x.png" alt="" />
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss">
-.empty {
+.empty-component {
   text-align: center;
   padding-top: rem-calc(60, 360);
 

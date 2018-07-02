@@ -15,9 +15,6 @@ export default {
   components: {
     Spinner,
   },
-  mounted () {
-    console.log(this.showLoading);
-  }
 }
 </script>
 

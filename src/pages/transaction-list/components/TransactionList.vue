@@ -33,7 +33,6 @@
             </div>
           </li>
         </ul>
-        <Empty v-else emptyType="TransactionListEmpty" tipText='<p>You do not have any transaction.</p>' />
       </template>
       <div slot="top" class="mint-loadmore-top">
         <span
@@ -67,7 +66,6 @@
 import { mapMutations } from 'vuex';
 import Tag from './Tag';
 import AmountDisplay from './AmountDisplay';
-import Empty from '../../../oriente-ui/Empty';
 import { isNative } from '@/utils/ua.js';
 import { formatCurrency } from '@/utils/numeral.js';
 import axios from 'axios';
@@ -90,7 +88,6 @@ export default {
   components: {
     Tag,
     AmountDisplay,
-    Empty,
     'mt-spinner': Spinner, // 或者使用 Vue.component(Spinner.name, Spinner) 注册组件
     'mt-loadmore': Loadmore,
     Toast,
@@ -138,7 +135,6 @@ export default {
                 this.$refs.loadmore.onTopLoaded();
               } else {
                 this.pageNo++;
-                this.$refs.loadmore.onBottomLoaded();
               }
               if (result.length < this.pageSize) {
                 // last page
@@ -146,9 +142,11 @@ export default {
                 console.log('No more updates');
               }
             } else {
-              this.empty = true;
               this.$refs.loadmore.onTopLoaded();
               this.allLoaded = true;
+              if (this.pageNo === 0) {
+                this.setEmptyViewStatus(true);
+              }
             }
           })
           .catch(err => {
@@ -182,7 +180,7 @@ export default {
               if (from === 'top') {
                 this.$refs.loadmore.onTopLoaded();
               } else {
-                this.$refs.loadmore.onBottomLoaded();
+                this.pageNo++;
               }
               if (result.length < this.pageSize) {
                 // last page
@@ -191,6 +189,9 @@ export default {
               }
             } else {
               this.allLoaded = true;
+              if (this.pageNo === 0) {
+                this.setEmptyViewStatus(true);
+              }
             }
           })
           .catch(err => {
@@ -199,9 +200,7 @@ export default {
       }
     },
     loadTop () {
-      if (this.empty !== true) {
-        this.fetchData('top');
-      }
+      this.fetchData('top');
     },
     loadBottom () {
       this.fetchData('bottom');
@@ -215,6 +214,7 @@ export default {
     ...mapMutations([
       'setTitle',
       'setLoadingStatus',
+      'setEmptyViewStatus',
     ]),
   }
 }
