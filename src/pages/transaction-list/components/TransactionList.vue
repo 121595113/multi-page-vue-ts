@@ -15,7 +15,6 @@
     >
       <template v-if="isRequest">
         <ul
-          :style="{ height: wrapperHeight + 'px'}"
           v-if="transactionList.length > 0">
           <li
             class="cell vux-1px-b"
@@ -105,9 +104,6 @@ export default {
     }
   },
   mounted () {
-    // if (this.transactionList.length > 0) {
-    //   this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-    // }
     this.setTitle('Transactions');
   },
   methods: {
@@ -121,6 +117,7 @@ export default {
             this.setLoadingStatus(false);
             const result = res.data;
             if (result.length > 0) {
+              // fix header 底部多出白色区块的问题
               this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
               result.forEach((item, index) => {
                 const newObj = {
@@ -234,6 +231,9 @@ export default {
 <style lang="scss" scoped>
 .transactions {
   background: #fff;
+  ul {
+    min-height: 100vh;
+  }
   ul,li {
     padding: 0;
     margin: 0;
