@@ -105,9 +105,9 @@ export default {
     }
   },
   mounted () {
-    if (this.transactionList.length > 0) {
-      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-    }
+    // if (this.transactionList.length > 0) {
+    //   this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    // }
     this.setTitle('Transactions');
   },
   methods: {
@@ -121,6 +121,7 @@ export default {
             this.setLoadingStatus(false);
             const result = res.data;
             if (result.length > 0) {
+              this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
               result.forEach((item, index) => {
                 const newObj = {
                   amount: `₱${formatCurrency(item.amount)}`,
