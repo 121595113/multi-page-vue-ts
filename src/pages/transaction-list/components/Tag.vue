@@ -9,17 +9,11 @@ export default {
       required: true,
     }
   },
-  data () {
-    return {
-      name: this.type === 'payment' ? 'Payment' : 'Disburment',
-    }
-  },
   filters: {
     capitalize: function (value) {
       if (!value) {
         return;
       }
-      value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
     }
   }
@@ -28,12 +22,12 @@ export default {
 
 <style lang="scss" scoped>
 span {
-  width: rem-calc(64, 360);
+  width: rem-calc(76, 360);
   display: inline-block;
   box-sizing: content-box;
   text-align: center;
 }
-.disburment {
+.disbursement {
   font-size: rem-calc(10, 360);
   color: #FF8010;
   background: #FFF5DB;

@@ -151,7 +151,12 @@ export default {
           .then((res) => {
             this.isRequest = true;
             this.setLoadingStatus(false);
-            const result = res.data.data;
+            let result = res.data.data;
+            if (Object.prototype.toString.call(result) === '[object Object]') {
+              const arr = [];
+              arr.push(result);
+              result = arr;
+            }
             if (result.length > 0) {
               result.forEach((item, index) => {
                 that.notificationList.push({

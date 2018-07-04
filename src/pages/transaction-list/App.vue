@@ -49,6 +49,11 @@ export default {
       }
     }
   },
+  mounted () {
+    isNative && this.$cordova.on('deviceready', () => {
+      window.StatusBar.overlaysWebView(false);
+    })
+  }
 }
 </script>
 
@@ -57,5 +62,9 @@ export default {
 .vux-1px-b:after {
   border-bottom: 1px solid #ececec;
   color: #ececec;
+}
+
+body {
+  background: #f6f6f6;
 }
 </style>

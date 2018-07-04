@@ -14,7 +14,9 @@
       :bottom-all-loaded="allLoaded"
     >
       <template v-if="isRequest">
-        <ul v-if="transactionList.length > 0">
+        <ul
+          :style="{ height: wrapperHeight + 'px'}"
+          v-if="transactionList.length > 0">
           <li
             class="cell vux-1px-b"
             v-for="(item, index) in transactionList"
@@ -121,7 +123,7 @@ export default {
                 const newObj = {
                   amount: `₱${formatCurrency(item.amount)}`,
                   transactionAt: item.transactionAt,
-                  transactionType: item.transactionType,
+                  transactionType: item.transactionType.toLowerCase(),
                   transactionParty: item.transactionParty,
                   loanOrderNo: item.loanOrderNo,
                 };
@@ -151,7 +153,7 @@ export default {
           })
           .catch(err => {
             this.isRequest = true;
-            this.setLoadingStatus(false);
+            this.setEmptyViewStatus(true);
             console.log(err);
           });
       } else {
@@ -161,7 +163,12 @@ export default {
             this.isRequest = true;
             this.setLoadingStatus(false);
             console.log(res);
-            const result = res.data.data;
+            let result = res.data.data;
+            if (Object.prototype.toString.call(result) === '[object Object]') {
+              const arr = [];
+              arr.push(result);
+              result = arr;
+            }
             if (result.length > 0) {
               result.forEach((item, index) => {
                 const newObj = {
@@ -196,6 +203,7 @@ export default {
           })
           .catch(err => {
             console.error(err);
+            this.setEmptyViewStatus(true);
           });
       }
     },
@@ -222,6 +230,7 @@ export default {
 
 <style lang="scss" scoped>
 .transactions {
+  background: #fff;
   ul,li {
     padding: 0;
     margin: 0;

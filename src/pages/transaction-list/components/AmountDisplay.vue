@@ -19,7 +19,7 @@ export default {
 span {
   font-size: rem-calc(16, 360);
 }
-.disburment {
+.disbursement {
   color: #FF8010;
 }
 .payment {
