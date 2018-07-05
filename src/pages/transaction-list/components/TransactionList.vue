@@ -154,6 +154,7 @@ export default {
           .catch(err => {
             this.isRequest = true;
             this.setEmptyViewStatus(true);
+            this.setLoadingStatus(false);
             console.log(err);
           });
       } else {
@@ -204,6 +205,7 @@ export default {
           .catch(err => {
             console.error(err);
             this.setEmptyViewStatus(true);
+            this.setLoadingStatus(false);
           });
       }
     },
@@ -230,9 +232,9 @@ export default {
 
 <style lang="scss" scoped>
 .transactions {
-  background: #fff;
   ul {
     min-height: 100vh;
+    background: #fff;
   }
   ul,li {
     padding: 0;
