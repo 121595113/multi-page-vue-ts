@@ -1,14 +1,12 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-// import '@/common/i18n'
-import 'lib-flexible'
-import 'promise-polyfill/src/polyfill'
-import '@/common/globalComponent'
 import Vue from 'vue'
+import 'lib-flexible'
+import '@/common/globalComponent';
 import App from './App'
 import router from './router'
 import VueCordova from 'oriente-vue-cordova'
-import { isNative, isAndroid } from '@/utils/ua.js'
+import { isNative, isAndroid } from '@/utils/ua.js';
+import FastClick from 'fastclick';
+import store from '../../store/header';
 
 Vue.use(VueCordova)
 
@@ -26,8 +24,11 @@ if (isNative && (window.location.protocol === 'file:' || window.location.port ==
 let vm = new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
+
+FastClick.attach(document.body);
 
 router.beforeEach((to, from, next) => {
   let toApp = vm.$cordova.router && vm.$cordova.router.isNative(to.fullPath)

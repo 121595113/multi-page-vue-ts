@@ -144,12 +144,16 @@ cordova.define('cordova/plugin_list', function (require, exports, module) {
             'merges': ['window']
         },
         {
-            "id": "cordova-plugin-statusbar.statusbar",
-            "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
-            "pluginId": "cordova-plugin-statusbar",
-            "clobbers": [
-                "window.StatusBar"
-            ]
+            'id': 'cordova-plugin-statusbar.statusbar',
+            'file': 'plugins/cordova-plugin-statusbar/www/statusbar.js',
+            'pluginId': 'cordova-plugin-statusbar',
+            'clobbers': ['window.StatusBar']
+        },
+        {
+            'id': 'cordova-plugin-track.track',
+            'file': 'plugins/cordova-plugin-track/www/track.js',
+            'pluginId': 'cordova-plugin-track',
+            'merges': ['window.track']
         }
     ];
     module.exports.metadata = // TOP OF METADATA
@@ -162,6 +166,6 @@ cordova.define('cordova/plugin_list', function (require, exports, module) {
         'cordova-plugin-compat': '1.2.0',
         'cordova-plugin-oriente-axios': '0.0.1',
         'cordova-plugin-oriente-router': '0.0.1',
-        "cordova-plugin-statusbar": "2.4.2"
+        'cordova-plugin-statusbar': '2.4.2'
     };    // BOTTOM OF METADATA
 });
