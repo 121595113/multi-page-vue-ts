@@ -1,3 +1,10 @@
 {
-  "bb": 2
+  "name": "oriente-vue",
+  "version": "1.2.0",
+  "description": "A Vue.js project",
+  "author": "TaoYu <121595113@qq.com>",
+  "license": "ISC",
+  "router-mapping": {
+    "mainPage": "main-page"
+  }
 }

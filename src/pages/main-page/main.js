@@ -1,22 +1,24 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
+// import '@/common/i18n'
 import 'lib-flexible'
+import 'promise-polyfill/src/polyfill'
+import '@/common/globalComponent'
+import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueCordova from 'oriente-vue-cordova'
+import { isNative, isAndroid } from '@/utils/ua.js'
 
-Vue.use(VueCordova, {
-  optionTestKey: 'optionTestValue'
-})
+Vue.use(VueCordova)
 
 Vue.config.productionTip = false
 
 // add cordova.js only if serving the app through file://
-if (window.location.protocol === 'file:' || window.location.port === '3000') {
+if (isNative && (window.location.protocol === 'file:' || window.location.port === '8080')) {
   var cordovaScript = document.createElement('script')
   cordovaScript.setAttribute('type', 'text/javascript')
-  cordovaScript.setAttribute('src', '../cordova.js')
+  cordovaScript.setAttribute('src', `../cordova-${isAndroid ? 'android' : 'ios'}.js`)
   document.body.appendChild(cordovaScript)
 }
 

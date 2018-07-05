@@ -1,8 +1,10 @@
 'use strict'
 const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const vuxLoader = require('vux-loader')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -21,7 +23,7 @@ const createLintingRule = () => ({
 
 let entries = utils.getMultiEntry('./src/' + config.moduleName + '/*/*.js');
 
-module.exports = {
+const webpackConfig = {
   context: path.resolve(__dirname, '../'),
   entry: entries,
   output: {
@@ -45,6 +47,11 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
+      },
+      {
+        test: /\.(yaml|yml)$/,
+        include: resolve('src'),
+        use: ['json-loader', 'yaml-loader'],
       },
       {
         test: /\.js$/,
@@ -74,9 +81,20 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('static/fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
     ]
   },
+  plugins: [
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../src/cordova*.js'),
+      to: '[name].[ext]',
+      ignore: ['.*']
+    }, {
+      from: path.resolve(__dirname, '../src/plugins'),
+      to: 'plugins',
+      ignore: ['.*']
+    }])
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
@@ -90,3 +108,41 @@ module.exports = {
     child_process: 'empty'
   }
 }
+
+module.exports = vuxLoader.merge(webpackConfig, {
+  plugins: [
+    'vux-ui',
+    {
+      name: 'duplicate-style',
+      options: {
+        cssProcessorOptions : {
+          safe: true,
+          zindex: false,
+          autoprefixer: {
+            add: true,
+            "browsers": [
+              "iOS >= 7",
+              "Android >= 4.1"
+            ]
+          }
+        }
+      }
+    },
+    {
+      name: 'less-theme',
+      path: 'src/styles/theme.less' // 相对项目根目录路径
+    },
+    {
+      name: 'i18n',
+      vuxStaticReplace: true,
+      vuxLocale: 'en'
+    },
+    // {
+    //   name: 'i18n',
+    //   vuxStaticReplace: false,
+    //   staticReplace: false,
+    //   extractToFiles: 'src/locales/components.yml',
+    //   localeList: ['en', 'zh-CN']
+    // }
+  ]
+})
