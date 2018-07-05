@@ -47,8 +47,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { isNative } from '@/utils/ua.js'
-import { AlertModule } from 'vux'
+import { AlertModule, ToastPlugin } from 'vux'
+Vue.use(ToastPlugin)
 export default {
   name: 'landingpage',
   data () {
@@ -63,8 +65,10 @@ export default {
       window.fetchDataFromNative && window.fetchDataFromNative()
       // 定制apply for a loan to buy按钮事件回调
       window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
-        this.$cordova.router.push({
-          path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+        window.fetchDataFromNative && window.fetchDataFromNative().then(() => {
+          this.$cordova.router.push({
+            path: '@oriente://cashalo.com/borrow/consumer/step1/page'
+          })
         })
       })
       // 打点统计
@@ -110,6 +114,11 @@ export default {
             }
           })
           .catch(err => {
+            this.$vux.toast.show({
+              type: 'text',
+              width: '60%',
+              text: err.msg || 'an error occured, please try again later',
+            });
             console.error(err)
           })
           .finally(() => {
