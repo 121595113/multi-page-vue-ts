@@ -1,11 +1,14 @@
 {
-  "name": "project3",
+  "name": "oriente-vue",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "generator": "node build/gen.js && node node_modules/.bin/walter-podspec '' --ios=8.0 --source_files=OrienteVue",
+    "oriente": "node node_modules/.bin/oriente",
+    "hybrid": "npm run build && npm run generator && cp ios-package/assets/OrienteVue.zip ../ios-ph-cashalo/OrienteVueRes/assets"
   },
   "dependencies": {
     "axios": "^0.18.0",
