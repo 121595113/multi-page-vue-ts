@@ -140,7 +140,7 @@ export default class LandingPage extends Vue {
 
 <style scoped lang="scss">
 .landingpage {
-  padding-top: 40px;
+  padding-top: 46px;
 }
 
 .title-box {
