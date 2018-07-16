@@ -4,5 +4,5 @@ declare module '*.vue' {
 }
 
 declare module 'mint-ui';
-declare module 'cordova';
+declare module 'fe-cordova';
 declare module 'fastclick';

@@ -4,7 +4,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 
-import { Cordova } from 'cordova';
+import { Cordova } from 'fe-cordova';
 import Axios from '@/plugins/axios';
 import Device from '@/plugins/device';
 import FetchData from '@/plugins/fetchdata';

@@ -1,4 +1,4 @@
-import { Plugin } from 'cordova';
+import { Plugin } from 'fe-cordova';
 
 let CDV: any;
 export default class Device extends Plugin {

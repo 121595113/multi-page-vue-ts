@@ -6,7 +6,7 @@ import router from './router';
 import FastClick from 'fastclick';
 import store from '../../store/header';
 
-import { Cordova } from 'cordova';
+import { Cordova } from 'fe-cordova';
 import Axios from '@/plugins/axios';
 import Device from '@/plugins/device';
 import FetchData from '@/plugins/fetchdata';
