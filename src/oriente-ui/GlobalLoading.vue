@@ -1,20 +1,20 @@
 <template>
   <div v-show="showLoading" class="global-loading">
-    <Spinner type="circles" />
+    <van-loading type="spinner" color="white" />
   </div>
 </template>
 
-<script>
-import { Spinner } from 'vux';
-export default {
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { Loading } from 'vant';
+Vue.use(Loading);
+
+@Component({
   props: {
-    showLoading: {
-      type: Boolean,
-    }
+    showLoading: Boolean,
   },
-  components: {
-    Spinner,
-  },
+})
+export default class GlobalLoading extends Vue {
 }
 </script>
 
@@ -28,18 +28,14 @@ export default {
   margin: auto;
   width: rem-calc(58, 360);
   height: rem-calc(58, 360);
-  background-color: rgba(0,0,0,0.54);
+  background-color: rgba(0, 0, 0, 0.54);
   border-radius: rem-calc(4, 360);
+}
 
-  span.vux-spinner {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    stroke: #bdbdbd;
-    fill: #bdbdbd;
-  }
+.van-loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

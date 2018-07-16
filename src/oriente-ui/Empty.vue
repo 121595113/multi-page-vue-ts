@@ -19,35 +19,31 @@ export default {
     tipText: {
       type: String,
       required: false,
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">
 .empty-component {
   text-align: center;
   padding-top: rem-calc(60, 360);
-
   position: absolute;
   top: 1.6rem;
   bottom: 0;
   left: 0;
   right: 0;
   background: #f6f6f6;
-
   img {
     width: rem-calc(140, 360);
   }
-
   .text {
     p:first-child {
       margin-top: rem-calc(20, 360);
     }
-
     p {
       font-size: rem-calc(16, 360);
-      color: rgba(0,0,0,0.50);
+      color: rgba(0, 0, 0, 0.50);
     }
   }
 }

@@ -1,15 +1,16 @@
 .DS_Store
-node_modules/
-/www/
-android-package
-ios-package
+node_modules
+/dist
+/www
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/test/unit/coverage/
-/test/e2e/reports/
-selenium-debug.log
-OrienteVue.podspec
 
 # Editor directories and files
 .idea
@@ -18,3 +19,4 @@ OrienteVue.podspec
 *.ntvs*
 *.njsproj
 *.sln
+*.sw*

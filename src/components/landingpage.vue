@@ -1,11 +1,11 @@
 <template>
   <div class="landingpage">
-    <x-header class="title-box" @on-click-back="goBack()" :left-options="{backText: '',preventGoBack: true}">{{title}}</x-header>
+    <van-nav-bar :title="title" left-arrow fixed @click-left="goBack" />
     <div class="landing-banner">
-      <img src="../assets/images/landing-banner.png"/>
+      <img src="../assets/images/landing-banner.png" />
     </div>
     <div class="landing-apply">
-      <img src="../assets/images/apply.png"/>
+      <img src="../assets/images/apply.png" />
       <span @click="gobuy">apply for a loan to buy</span>
     </div>
     <div class="landing-how">
@@ -13,7 +13,9 @@
         <p>How it Works</p>
       </div>
       <div class="remarks">
-        <p>• This loan can only be used at participating Robinsons Stores.<router-link to="/robinsonsstores"><b>View Robinsons Stores</b></router-link></p>
+        <p>• This loan can only be used at participating Robinsons Stores.
+          <router-link to="/robinsonsstores"><b>View Robinsons Stores</b></router-link>
+        </p>
         <p>• Look for a Cashalo representative at participating stores to assist you with your Cashacart Loan.</p>
       </div>
       <div class="process">
@@ -46,107 +48,102 @@
   </div>
 </template>
 
-<script>
-import Vue from 'vue';
-import { isNative } from '@/utils/ua.js'
-import { AlertModule, ToastPlugin } from 'vux'
-Vue.use(ToastPlugin)
-export default {
-  name: 'landingpage',
-  data () {
-    return {
-      title: 'Cashacart',
-      requesting: false
-    }
-  },
-  mounted () {
-    isNative && this.$cordova.on('deviceready', () => {
-      // 从native获取数据
-      window.fetchDataFromNative && window.fetchDataFromNative()
-      // 定制apply for a loan to buy按钮事件回调
-      window.cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
-        window.fetchDataFromNative && window.fetchDataFromNative().then(() => {
-          this.$cordova.router.push({
-            path: '@oriente://cashalo.com/borrow/consumer/step1/page'
-          })
-        })
-      })
-      // 打点统计
-      window.track.screen('consumer_finance_land')
-    })
-  },
-  methods: {
-    goBack () {
-      isNative && this.$cordova.router.back()
-    },
-    gobuy () {
-      if (this.requesting) return
-      // 打点统计
-      window.track.event('click_button', {
-        screen_name: 'consumer_finance_land',
-        element_id: 'ApplyNow'
-      })
-      let status = window.localStorage.getItem('verify')
-      if (!status || !isNative) return
-      let that = this
-      if (status === '1') {
-        this.requesting = true
-        this.$cordova.axios.get('/loan/current')
-          .then(res => {
-            if (res.errorCode !== 0) {
-              return Promise.reject(res)
-            }
-            if (res.data.funding === 0) {
-              this.$cordova.router.push({
-                path: '@oriente://cashalo.com/borrow/consumer/step1/page'
-              })
-            }
-            if (res.data.funding === 1) {
-              // 打点统计
-              window.track.event('show_notice', {
-                screen_name: 'consumer_finance_land',
-                notice_name: 'outstanding_loan'
-              })
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { Dialog } from 'vant';
+import { Toast } from 'vant';
 
-              AlertModule.show({
-                content: 'You have an outstanding loan. You<br>may borrow again once this loan<br>has been paid.'
-              })
-            }
-          })
-          .catch(err => {
-            this.$vux.toast.show({
-              type: 'text',
-              width: '60%',
-              text: err.msg || 'an error occured, please try again later',
+let cordova: any;
+
+@Component
+export default class LandingPage extends Vue {
+  private title: string = 'Cashacart';
+  private requesting: boolean = false;
+
+  public goBack() {
+    cordova && cordova.$router.back();
+  }
+  public gobuy() {
+    if (this.requesting) return;
+    // 打点统计
+    cordova.track.event('click_button', {
+      screen_name: 'consumer_finance_land',
+      element_id: 'ApplyNow',
+    });
+    const status = window.localStorage.getItem('verify');
+    if (!status || !cordova) return;
+    const that = this;
+    if (status === '1') {
+      this.requesting = true;
+      cordova.axios.get('/loan/current')
+        .then((res: any) => {
+          if (res.errorCode !== 0) {
+            return (window as any).Promise.reject(res);
+          }
+          if (res.data.funding === 0) {
+            cordova.$router.push({
+              path: '@oriente://cashalo.com/borrow/consumer/step1/page',
             });
-            console.error(err)
-          })
-          .finally(() => {
-            that.requesting = false
-          })
-      } else {
-        this.$cordova.router.push({
-          path: '@oriente://cashalo.com/userProfile/page',
-          query: {
-            eventCallback: `cordova.fireDocumentEvent('goBorrow')`
+          }
+          if (res.data.funding === 1) {
+            // 打点统计
+            (window as any).track.event('show_notice', {
+              screen_name: 'consumer_finance_land',
+              notice_name: 'outstanding_loan',
+            });
+
+            Dialog.alert({
+              message: 'You have an outstanding loan. You may borrow again once this loan has been paid.',
+            });
           }
         })
-      }
-    },
-    gohelp () {
-      isNative && this.$cordova.router.push({
-        path: '@oriente://cashalo.com/me/helpcenter/page'
-      })
+        .catch((err: any) => {
+          Toast(err.msg || 'an error occured, please try again later');
+          console.error(err);
+        })
+        .finally(() => {
+          that.requesting = false;
+        });
+    } else {
+      cordova.$router.push({
+        path: '@oriente://cashalo.com/userProfile/page',
+        query: {
+          eventCallback: `cordova.fireDocumentEvent('goBorrow')`,
+        },
+      });
     }
+  }
+  public gohelp() {
+    cordova && cordova.$router.push({
+      path: '@oriente://cashalo.com/me/helpcenter/page',
+    });
+  }
+  private mounted() {
+    cordova = (window as any).cordova;
+    cordova && cordova.on('deviceready', () => {
+      // 从native获取数据
+      cordova.fetchData.fetchDataFromNative();
+      // 定制apply for a loan to buy按钮事件回调
+      cordova.addStickyDocumentEventHandler('goBorrow').subscribe(() => {
+        cordova.fetchData.fetchDataFromNative().then(() => {
+          cordova.$router.push({
+            path: '@oriente://cashalo.com/borrow/consumer/step1/page',
+          });
+        });
+      });
+      // 打点统计
+      cordova.track.screen('consumer_finance_land');
+    });
   }
 }
 </script>
 
 <style scoped lang="scss">
-.landingpage{
+.landingpage {
   padding-top: 40px;
 }
-.title-box{
+
+.title-box {
   position: fixed;
   width: 100%;
   top: 0;
@@ -154,25 +151,29 @@ export default {
   background-color: #fff;
 }
 
-.landing-banner{
+.landing-banner {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
-.landing-banner img{
+
+.landing-banner img {
   width: 100%;
   display: block;
 }
-.landing-apply{
+
+.landing-apply {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
-.landing-apply img{
+
+.landing-apply img {
   width: 100%;
   display: block;
 }
-.landing-apply span{
+
+.landing-apply span {
   width: 88%;
   display: block;
   position: absolute;
@@ -181,14 +182,16 @@ export default {
   top: 0;
   margin-left: -44%;
   line-height: rem-calc(40);
-  padding:4.2% 0;
+  padding: 4.2% 0;
   opacity: 0;
 }
-.landing-how{
+
+.landing-how {
   margin: 5.56% 4.45% 0;
 }
-.landing-how .title p{
-  color: rgba(0,0,0,.8);
+
+.landing-how .title p {
+  color: rgba(0, 0, 0, .8);
   letter-spacing: 0;
   font-size: rem-calc(18, 320);
   font-weight: bold;
@@ -196,86 +199,103 @@ export default {
   margin-bottom: rem-calc(32);
   line-height: rem-calc(56);
 }
-.process{
+
+.process {
   overflow: hidden;
   position: relative;
   padding-bottom: 3%;
 }
-.stepNumber{
+
+.stepNumber {
   float: left;
   width: 8%;
   margin-left: 1.85%;
   font-size: rem-calc(32);
 }
-.stepNumber img{
+
+.stepNumber img {
   max-width: 100%;
   margin: 0;
   vertical-align: bottom;
 }
-.line1{
+
+.line1 {
   height: rem-calc(110);
 }
-.line1, .line2{
+
+.line1,
+.line2 {
   width: 2px;
   display: block;
   background: #e9e9e9;
   margin: 0 auto;
 }
-.line2{
+
+.line2 {
   height: rem-calc(280);
 }
-.steText{
+
+.steText {
   overflow: hidden;
   position: relative;
   width: 76%;
   margin-left: 4.27%;
   float: left;
 }
-.stePub{
+
+.stePub {
   width: 100%;
 }
-.steBottom{
+
+.steBottom {
   border-bottom: 1px solid #ececec;
   margin-bottom: 5.56%;
 }
-.stePub h4{
+
+.stePub h4 {
   font-size: rem-calc(16, 320);
   color: #000;
-  line-height:rem-calc(32);
+  line-height: rem-calc(32);
   font-weight: normal;
 }
-.stePub p{
+
+.stePub p {
   font-size: rem-calc(12, 320);
   color: #888;
   line-height: rem-calc(16, 320);
   padding-bottom: rem-calc(32);
   padding-top: rem-calc(12);
 }
-.remarks{
+
+.remarks {
   padding: 0 0 4% 0;
   width: 100%;
   overflow: hidden;
   position: relative;
 }
-.remarks p{
-  color:rgba(0, 0, 0, 0.3);
-  font-size:rem-calc(12, 320);
+
+.remarks p {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: rem-calc(12, 320);
   line-height: rem-calc(36);
-  margin-bottom:rem-calc(24);
+  margin-bottom: rem-calc(24);
 }
-.remarks p b{
-  color:#266BB7;
-  margin-left:rem-calc(8);
+
+.remarks p b {
+  color: #266BB7;
+  margin-left: rem-calc(8);
   font-weight: normal;
   text-decoration: none;
 }
-.help{
+
+.help {
   width: 92%;
-  margin:0 auto 5% auto;
+  margin: 0 auto 5% auto;
   overflow: hidden;
   position: relative;
 }
-.help span{
+
+.help span {
   display: block;
   background: #f0f6fb;
   border-radius: rem-calc(12);
