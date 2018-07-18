@@ -6,3 +6,4 @@ declare module '*.vue' {
 declare module 'mint-ui';
 declare module 'fe-cordova';
 declare module 'fastclick';
+declare module 'vant/lib/locale/lang/en-US';
