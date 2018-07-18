@@ -52,6 +52,17 @@ module.exports = {
           args[0].chunkFilename = 'chunk/[id].[contenthash:8].css';
           return args;
         });
+
+      // 拷贝项目配置
+      config
+        .plugin('copy')
+        .tap(args => {
+          args[0].push({
+            from: 'src/views/package.json',
+            to: ''
+          });
+          return args;
+        });
     }
   },
 
