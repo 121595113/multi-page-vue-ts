@@ -64,7 +64,7 @@ let cordova: any;
     ...mapMutations(['setTitle', 'setLoadingStatus', 'setEmptyViewStatus']),
   },
 })
-export default class TransactionList extends Vue {
+export default class extends Vue {
   private isRequest: boolean = false;
   private topStatus: string = '';
   private bottomStatus: string = '';

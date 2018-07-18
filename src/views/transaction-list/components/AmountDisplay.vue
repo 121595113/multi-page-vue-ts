@@ -15,7 +15,7 @@ import { Component, Vue } from 'vue-property-decorator';
     },
   },
 })
-export default class AmountDisplay extends Vue {}
+export default class extends Vue {}
 </script>
 
 <style lang="scss" scoped>

@@ -16,7 +16,7 @@ import { mapMutations } from 'vuex';
     ]),
   },
 })
-export default class NotificationDetail extends Vue {
+export default class extends Vue {
   private notificationId: number = 0;
   private title: string = '';
   private template: string = '';

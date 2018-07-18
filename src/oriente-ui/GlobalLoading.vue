@@ -14,7 +14,7 @@ Vue.use(Loading);
     showLoading: Boolean,
   },
 })
-export default class GlobalLoading extends Vue {
+export default class extends Vue {
 }
 </script>
 

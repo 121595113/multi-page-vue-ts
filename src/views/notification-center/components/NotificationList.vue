@@ -58,7 +58,7 @@ let cordova: any;
     ]),
   },
 })
-export default class Notification extends Vue {
+export default class extends Vue {
   private isRequest: boolean = false;
   private bottomStatus: string = '';
   private wrapperHeight: number = 0;

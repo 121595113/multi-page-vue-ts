@@ -56,7 +56,7 @@ import { Toast } from 'vant';
 let cordova: any;
 
 @Component
-export default class LandingPage extends Vue {
+export default class extends Vue {
   private title: string = 'Cashacart';
   private requesting: boolean = false;
 

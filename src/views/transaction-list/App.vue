@@ -28,7 +28,7 @@ let cordova: any;
     ]),
   },
 })
-export default class App extends Vue {
+export default class extends Vue {
   public onBack(): void {
     const currentPath = (this as any).$router.currentRoute.path;
     console.log(currentPath);

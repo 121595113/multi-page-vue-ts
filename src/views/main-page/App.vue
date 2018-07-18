@@ -8,7 +8,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class App extends Vue {
+export default class extends Vue {
   private mounted() {
     const cordova = (window as any).cordova;
     cordova && cordova.on('deviceready', () => {

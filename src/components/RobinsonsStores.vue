@@ -24,7 +24,7 @@ let cordova: any;
     Empty,
   },
 })
-export default class RobinsonsStores extends Vue {
+export default class extends Vue {
   private title: string = 'Robinsons Stores';
   private url: string = '';
   private isRequest: boolean = false;
