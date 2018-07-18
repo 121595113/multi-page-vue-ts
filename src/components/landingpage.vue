@@ -49,12 +49,13 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { Dialog } from 'vant';
 import { Toast } from 'vant';
 
 let cordova: any;
 
+@Component
 export default class extends Vue {
   private title: string = 'Cashacart';
   private requesting: boolean = false;
