@@ -75,7 +75,7 @@ export default class TransactionList extends Vue {
   private pageNo: number = 0;
   private pageSize: number = 10;
 
-  public fetchData(from ?: any) {
+  public fetchData(from: string) {
     if (cordova) {
       const that = this;
       cordova.axios
@@ -97,11 +97,7 @@ export default class TransactionList extends Vue {
                 transactionParty: item.transactionParty,
                 loanOrderNo: item.loanOrderNo,
               };
-              if (from === 'top') {
-                that.transactionList.unshift(newObj);
-              } else {
-                that.transactionList.push(newObj);
-              }
+              that.transactionList.push(newObj);
             });
             if (from === 'top') {
               (this.$refs.loadmore as any).onTopLoaded();
@@ -142,6 +138,9 @@ export default class TransactionList extends Vue {
             result = arr;
           }
           if (result.length > 0) {
+            // fix header 底部多出白色区块的问题
+            const clientHeight = document.documentElement.clientHeight;
+            this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
             result.forEach((item: any) => {
               const newObj = {
                 amount: `₱${formatCurrency(item.amount)}`,
@@ -150,11 +149,7 @@ export default class TransactionList extends Vue {
                 transactionParty: item.transactionParty,
                 loanOrderNo: item.loanOrderNo,
               };
-              if (from === 'top') {
-                that.transactionList.unshift(newObj);
-              } else {
-                that.transactionList.push(newObj);
-              }
+              that.transactionList.push(newObj);
             });
             if (from === 'top') {
               (this.$refs.loadmore as any).onTopLoaded();
@@ -181,7 +176,10 @@ export default class TransactionList extends Vue {
     }
   }
   public loadTop() {
-    this.fetchData('top');
+    this.$nextTick(() => {
+      this.transactionList.length = 0;
+      this.fetchData('top');
+    });
   }
   public loadBottom() {
     this.fetchData('bottom');
@@ -194,17 +192,15 @@ export default class TransactionList extends Vue {
   }
   private created() {
     cordova = (window as any).cordova;
+    (this as any).setTitle('Transactions');
     if (cordova) {
       cordova.on('deviceready', () => {
         (this as any).setLoadingStatus(true);
-        this.fetchData();
+        this.fetchData('top');
       });
     } else {
-      this.fetchData();
+      this.fetchData('top');
     }
-  }
-  private mounted() {
-    (this as any).setTitle('Transactions');
   }
 }
 </script>
