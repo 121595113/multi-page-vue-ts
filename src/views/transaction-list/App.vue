@@ -10,7 +10,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { mapState } from 'vuex';
-import { isNative } from '@/utils/ua';
 import Empty from '@/oriente-ui/Empty.vue';
 import GlobalLoading from '@/oriente-ui/GlobalLoading.vue';
 
@@ -34,7 +33,7 @@ export default class App extends Vue {
     const currentPath = (this as any).$router.currentRoute.path;
     console.log(currentPath);
     if (currentPath === '/') {
-      if (isNative) {
+      if (cordova) {
         cordova.$router.back();
       }
     } else {
@@ -52,11 +51,6 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-.vux-1px-b:after {
-  border-bottom: 1px solid #ececec;
-  color: #ececec;
-}
-
 body {
   background: #f6f6f6;
 }

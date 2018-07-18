@@ -35,7 +35,6 @@ import { mapMutations } from 'vuex';
 import { Loadmore } from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import Empty from '@/oriente-ui/Empty.vue';
-import { isNative } from '@/utils/ua';
 import axios from 'axios';
 
 let cordova: any;

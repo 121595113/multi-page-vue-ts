@@ -3,7 +3,7 @@
     <mt-loadmore ref="loadmore" :auto-fill="false" :top-method="loadTop" @top-status-change="handleTopChange" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded">
       <template v-if="isRequest">
         <ul v-if="transactionList.length > 0">
-          <li class="cell vux-1px-b" v-for="(item, index) in transactionList" :key="index">
+          <li class="cell van-hairline--bottom" v-for="(item, index) in transactionList" :key="index">
             <div class="left">
               <Tag :type="item.transactionType" />
             </div>

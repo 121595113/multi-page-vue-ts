@@ -7,11 +7,11 @@ import enUS from 'vant/lib/locale/lang/en-US';
 Vue.use(NavBar);
 
 const message = {
-	'en-US': {
-		vanDialog: {
-	    confirm: 'OK',
-	  },
-	},
+  'en-US': {
+    vanDialog: {
+      confirm: 'OK',
+    },
+  },
 };
 
 Locale.add(message);
