@@ -141,6 +141,7 @@ export default class extends Vue {
 <style scoped lang="scss">
 .landingpage {
   padding-top: 46px;
+  overflow: hidden;
 }
 
 .title-box {
