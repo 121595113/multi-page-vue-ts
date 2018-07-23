@@ -1,6 +1,6 @@
 <template>
   <div class="landingpage">
-    <van-nav-bar :title="title" left-arrow fixed @click-left="cordova.$router.back()" />
+    <van-nav-bar :title="title" left-arrow fixed @click-left="$router.back()" />
     <template v-if="isRequest">
       <div v-if="storeslist.length > 0" class="stores-content">
         <div class="storeslist" v-for="items in storeslist" :key="items.id">
