@@ -73,11 +73,10 @@ export default class extends Vue {
   private wrapperHeight: number = 0;
   private transactionList: any = [];
   private pageNo: number = 0;
-  private pageSize: number = 10;
+  private pageSize: number = 20;
 
   public fetchData(from: string) {
     if (cordova) {
-      const that = this;
       cordova.axios
         .get(`/loan/capital/${this.pageNo}/${this.pageSize}`)
         .then((res: any) => {
@@ -89,20 +88,21 @@ export default class extends Vue {
             // fix header 底部多出白色区块的问题
             const clientHeight = document.documentElement.clientHeight;
             this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
-            result.forEach((item: any) => {
-              const newObj = {
+            const arrList = result.map((item: any) => {
+              return {
                 amount: `₱${formatCurrency(item.amount)}`,
                 transactionAt: item.transactionAt,
                 transactionType: item.transactionType.toLowerCase(),
                 transactionParty: item.transactionParty,
                 loanOrderNo: item.loanOrderNo,
               };
-              that.transactionList.push(newObj);
             });
             if (from === 'top') {
+              this.transactionList = arrList;
               (this.$refs.loadmore as any).onTopLoaded();
             } else {
-              this.pageNo++;
+              this.transactionList = this.transactionList.concat(arrList);
+              (this.$refs.loadmore as any).onBottomLoaded();
             }
             if (result.length < this.pageSize) {
               // last page
@@ -111,6 +111,7 @@ export default class extends Vue {
             }
           } else {
             (this.$refs.loadmore as any).onTopLoaded();
+            (this.$refs.loadmore as any).onBottomLoaded();
             this.allLoaded = true;
             if (this.pageNo === 0) {
               (this as any).setEmptyViewStatus(true);
@@ -124,7 +125,6 @@ export default class extends Vue {
           console.log(err);
         });
     } else {
-      const that = this;
       axios
         .get('http://192.168.12.12:3000/capitalList')
         .then(res => {
@@ -141,20 +141,21 @@ export default class extends Vue {
             // fix header 底部多出白色区块的问题
             const clientHeight = document.documentElement.clientHeight;
             this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
-            result.forEach((item: any) => {
-              const newObj = {
+            const arrList = result.map((item: any) => {
+              return {
                 amount: `₱${formatCurrency(item.amount)}`,
                 transactionAt: item.transactionAt,
-                transactionType: item.transactionType,
+                transactionType: item.transactionType.toLowerCase(),
                 transactionParty: item.transactionParty,
                 loanOrderNo: item.loanOrderNo,
               };
-              that.transactionList.push(newObj);
             });
             if (from === 'top') {
+              this.transactionList = arrList;
               (this.$refs.loadmore as any).onTopLoaded();
             } else {
-              this.pageNo++;
+              this.transactionList = this.transactionList.concat(arrList);
+              (this.$refs.loadmore as any).onBottomLoaded();
             }
             if (result.length < this.pageSize) {
               // last page
@@ -177,12 +178,17 @@ export default class extends Vue {
   }
   public loadTop() {
     this.$nextTick(() => {
+      this.pageNo = 0;
+      this.allLoaded = false;
       this.transactionList.length = 0;
       this.fetchData('top');
     });
   }
   public loadBottom() {
-    this.fetchData('bottom');
+    this.$nextTick(() => {
+      this.pageNo++;
+      this.fetchData('bottom');
+    });
   }
   public handleTopChange(status: string) {
     this.topStatus = status;

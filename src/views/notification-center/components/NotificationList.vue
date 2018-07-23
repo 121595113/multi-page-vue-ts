@@ -65,7 +65,7 @@ export default class extends Vue {
   private allLoaded: boolean = false;
   private notificationList: any = [];
   private lastMsgId: string = '-1';
-  private pageSize: number = 10;
+  private pageSize: number = 20;
 
   public handleBottomChange(status: string) {
     this.bottomStatus = status;
@@ -158,7 +158,11 @@ export default class extends Vue {
         });
     }
   }
-  private created() {
+  private mounted() {
+    const clientHeight = document.documentElement.clientHeight;
+    this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
+    (this as any).setTitle('Notifications');
+
     cordova = (window as any).cordova;
     if (cordova) {
       cordova.on('deviceready', () => {
@@ -169,12 +173,6 @@ export default class extends Vue {
       this.fetchData();
     }
   }
-  private mounted() {
-    const clientHeight = document.documentElement.clientHeight;
-    this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
-    window.scrollTo(0, 0);
-    (this as any).setTitle('Notifications');
-  }
 }
 </script>
 
@@ -183,7 +181,7 @@ export default class extends Vue {
   ul.list {
     height: 100%;
     margin: 0;
-    padding: 0 0 rem-calc(30, 320) 0;
+    padding:rem-calc(60 0 30 0, 320);
     li {
       list-style-type: none;
       text-align: center;
@@ -193,7 +191,7 @@ export default class extends Vue {
         background: #CDD2D9;
         color: #fff;
         border-radius: rem-calc(14, 320);
-        padding: rem-calc(4, 320) rem-calc(10, 320);
+        padding: rem-calc(4 10, 320);
       }
       .text-card {
         background: #fff;
@@ -201,7 +199,7 @@ export default class extends Vue {
         margin: 0 rem-calc(16, 320);
         margin-top: rem-calc(10, 320);
         text-align: left;
-        padding: rem-calc(24, 320) rem-calc(16, 320);
+        padding: rem-calc(24 16, 320);
         display: -webkit-box;
         flex-flow: row wrap;
         align-items: center;
@@ -233,6 +231,9 @@ export default class extends Vue {
           border-right: 1px solid #BDC1C8;
           transform: rotate(45deg);
         }
+      }
+      &:first-child {
+        padding-top: 0;
       }
     }
   }
