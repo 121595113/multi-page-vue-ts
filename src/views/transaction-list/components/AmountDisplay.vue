@@ -20,11 +20,11 @@ export default class extends Vue {}
 
 <style lang="scss" scoped>
 span {
-  font-size: rem-calc(16, 360);
+  font-size: rem-calc(16);
 }
 
 .disbursement {
-  color: #FF8010;
+  color: #D51C29;
 }
 
 .payment {

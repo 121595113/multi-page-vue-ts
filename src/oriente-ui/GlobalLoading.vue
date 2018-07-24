@@ -26,10 +26,10 @@ export default class extends Vue {
   left: 0;
   right: 0;
   margin: auto;
-  width: rem-calc(58, 360);
-  height: rem-calc(58, 360);
+  width: rem-calc(58);
+  height: rem-calc(58);
   background-color: rgba(0, 0, 0, 0.54);
-  border-radius: rem-calc(4, 360);
+  border-radius: rem-calc(4);
 }
 
 .van-loading {

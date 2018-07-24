@@ -26,22 +26,22 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 span {
-  width: rem-calc(76, 360);
+  min-width: rem-calc(70);
   display: inline-block;
   box-sizing: content-box;
   text-align: center;
 }
 
 .disbursement {
-  font-size: rem-calc(10, 360);
-  color: #FF8010;
-  background: #FFF5DB;
-  border-radius: rem-calc(25, 360);
-  padding: rem-calc(4, 360) rem-calc(10, 360);
+  font-size: rem-calc(10);
+  color: #D51C29;
+  background:  #FFE9E5;
+  border-radius: rem-calc(25);
+  padding: rem-calc(4 10);
 }
 
 .payment {
-  font-size: rem-calc(10, 360);
+  font-size: rem-calc(10);
   color: #71B853;
   background: #DEF7D3;
   border-radius: 25px;

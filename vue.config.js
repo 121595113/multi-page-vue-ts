@@ -15,10 +15,7 @@ module.exports = {
   productionSourceMap: false,
   css: {
     loaderOptions: {
-      // pass options to sass-loader
       sass: {
-        // @/ is an alias to src/
-        // so this assumes you have a file named `src/variables.scss`
         data: `@import "@/scss/_rem-calc.scss";`
       }
     },
@@ -27,8 +24,12 @@ module.exports = {
   pages: pages,
   devServer: {
     proxy: {
-      '/msgList': {
-        target: 'http://192.168.12.12:3000',
+      '/notification': {
+        target: 'http://dev-service.cashalo.com/',
+        changeOrigin: true
+      },
+      '/loan': {
+        target: 'http://dev-service.cashalo.com/trade',
         changeOrigin: true
       }
     }

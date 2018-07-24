@@ -32,7 +32,6 @@ let cordova: any;
 export default class extends Vue {
   public onBack() {
     const currentPath = (this as any).$router.currentRoute.path;
-    console.log(currentPath);
     if (currentPath === '/list' || currentPath === '/') {
       if (cordova) {
         cordova.$router.back();

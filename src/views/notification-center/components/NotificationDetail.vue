@@ -39,24 +39,25 @@ export default class extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .notification-detail {
   background: #fff;
-  padding: rem-calc(42 24, 320);
-  .detail-title {
-    font-weight: bold;
-    font-size: rem-calc(16, 320);
+  padding: rem-calc(42 24);
+}
+.detail-title {
+  font-weight: 400;
+  font-size: rem-calc(16);
+  margin-top: rem-calc(20);
+  color: rgba(0, 0, 0, 0.80);
+}
+.detail-content {
+  p {
+    font-size: rem-calc(14);
     color: rgba(0, 0, 0, 0.80);
-  }
-  .detail-content {
-    p {
-      font-size: rem-calc(14, 320);
-      color: rgba(0, 0, 0, 0.80);
-      line-height: 1.4;
-      a {
-        color: #266BB7;
-        text-decoration: none;
-      }
+    line-height: 1.4;
+    a {
+      color: #5A7CAB;
+      text-decoration: none;
     }
   }
 }

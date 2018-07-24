@@ -84,84 +84,49 @@ export default class extends Vue {
     });
   }
   public fetchData() {
-    if (cordova) {
-      console.log(this.lastMsgId);
-      console.log(this.pageSize);
-      const that = this;
-      cordova.axios.get(`/notification/${this.lastMsgId}/${this.pageSize}`)
-        .then((res: any) => {
-          this.isRequest = true;
-          (this as any).setLoadingStatus(false);
-          const result = res.data;
-          if (result.length > 0) {
-            result.forEach((item: any) => {
-              that.notificationList.push({
-                notificationId: item.notificationId,
-                title: item.title,
-                template: item.template,
-                effectiveAt: item.effectiveAt,
-              });
-            });
-            this.lastMsgId = result[result.length - 1] && result[result.length - 1].notificationId;
-            (this.$refs.loadmore as any).onBottomLoaded();
-            if (result.length < this.pageSize) {
-              // last page
-              this.allLoaded = true;
-              console.log('No more updates');
-            }
-          } else {
-            this.allLoaded = true;
-          }
+    (cordova ? cordova.axios : axios).get(`/notification/${this.lastMsgId}/${this.pageSize}`,
+        cordova || process.env.NODE_ENV === 'production' ? {} : {
+          headers: {
+            uid: 123,
+          },
         })
-        .catch((err: any) => {
-          this.isRequest = true;
-          (this as any).setLoadingStatus(false);
+      .then((res: any) => {
+        return cordova || process.env.NODE_ENV === 'production' ? res.data : res.data.data;
+      })
+      .then((result: any) => {
+        this.isRequest = true;
+        (this as any).setLoadingStatus(false);
+        if (result.length > 0) {
+          result.forEach((item: any) => {
+            this.notificationList.push({
+              notificationId: item.notificationId,
+              title: item.title,
+              template: item.template,
+              effectiveAt: item.effectiveAt,
+            });
+          });
+          this.lastMsgId = result[result.length - 1] && result[result.length - 1].notificationId;
+          (this.$refs.loadmore as any).onBottomLoaded();
+          if (result.length < this.pageSize) {
+            // last page
+            this.allLoaded = true;
+            console.log('No more updates');
+          }
+        } else {
           this.allLoaded = true;
-          console.log(err);
-        });
-    } else {
-      const that = this;
-      console.log(this.lastMsgId);
-      console.log(this.pageSize);
-      axios.get('/msgList')
-        .then((res) => {
-          this.isRequest = true;
-          (this as any).setLoadingStatus(false);
-          let result = res.data.data;
-          if (Object.prototype.toString.call(result) === '[object Object]') {
-            const arr = [];
-            arr.push(result);
-            result = arr;
-          }
-          if (result.length > 0) {
-            result.forEach((item: any) => {
-              that.notificationList.push({
-                notificationId: item.notificationId,
-                title: item.title,
-                template: item.template,
-                effectiveAt: item.effectiveAt,
-              });
-            });
-            this.lastMsgId = result[result.length - 1] && result[result.length - 1].notificationId;
-            (this.$refs.loadmore as any).onBottomLoaded();
-            if (result.length < this.pageSize) {
-              // last page
-              this.allLoaded = true;
-              console.log('No more updates');
-            }
-          } else {
-            this.allLoaded = true;
-          }
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
+        }
+      })
+      .catch((err: any) => {
+        this.isRequest = true;
+        (this as any).setLoadingStatus(false);
+        this.allLoaded = true;
+        console.log(err);
+      });
   }
   private mounted() {
     const clientHeight = document.documentElement.clientHeight;
     this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
-    (this as any).setTitle('Notifications');
+    (this as any).setTitle('Pemberitahuan');
 
     cordova = (window as any).cordova;
     if (cordova) {
@@ -181,60 +146,60 @@ export default class extends Vue {
   ul.list {
     height: 100%;
     margin: 0;
-    padding:rem-calc(60 0 30 0, 320);
-    li {
-      list-style-type: none;
-      text-align: center;
-      padding-top: rem-calc(20, 320);
-      .datetime {
-        display: inline-block;
-        background: #CDD2D9;
-        color: #fff;
-        border-radius: rem-calc(14, 320);
-        padding: rem-calc(4 10, 320);
-      }
-      .text-card {
-        background: #fff;
-        border-radius: rem-calc(4, 320);
-        margin: 0 rem-calc(16, 320);
-        margin-top: rem-calc(10, 320);
-        text-align: left;
-        padding: rem-calc(24 16, 320);
-        display: -webkit-box;
-        flex-flow: row wrap;
-        align-items: center;
-        .left {
-          flex: 1;
-          .title {
-            font-size: rem-calc(16, 320);
-            color: rgba(0, 0, 0, 0.80);
-            padding-bottom: rem-calc(8, 320);
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 95%;
-          }
-          .content-abstract {
-            font-size: rem-calc(14, 320);
-            color: rgba(0, 0, 0, 0.50);
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 95%;
-          }
+    padding: rem-calc(60 0 30 0);
+  }
+  li {
+    list-style-type: none;
+    text-align: center;
+    padding-top: rem-calc(20);
+    .datetime {
+      display: inline-block;
+      background: #CDD2D9;
+      color: #fff;
+      border-radius: rem-calc(14);
+      padding: rem-calc(4 10);
+    }
+    .text-card {
+      background: #fff;
+      border-radius: rem-calc(4);
+      margin: 0 rem-calc(16);
+      margin-top: rem-calc(10);
+      text-align: left;
+      padding: rem-calc(24 16);
+      display: -webkit-box;
+      flex-flow: row wrap;
+      align-items: center;
+      .left {
+        flex: 1;
+        .title {
+          font-size: rem-calc(16);
+          color: rgba(0, 0, 0, 0.80);
+          padding-bottom: rem-calc(8);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 95%;
         }
-        .right {
-          flex: init;
-          width: 10px;
-          height: 10px;
-          border-top: 1px solid #BDC1C8;
-          border-right: 1px solid #BDC1C8;
-          transform: rotate(45deg);
+        .content-abstract {
+          font-size: rem-calc(14);
+          color: rgba(0, 0, 0, 0.50);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 95%;
         }
       }
-      &:first-child {
-        padding-top: 0;
+      .right {
+        flex: init;
+        width: 10px;
+        height: 10px;
+        border-top: 1px solid #BDC1C8;
+        border-right: 1px solid #BDC1C8;
+        transform: rotate(45deg);
       }
+    }
+    &:first-child {
+      padding-top: 0;
     }
   }
 }
@@ -252,7 +217,7 @@ export default class extends Vue {
 
 .mint-loadmore-bottom {
   span {
-    font-size: rem-calc(12, 360);
+    font-size: rem-calc(12);
     color: rgba(0, 0, 0, 0.50);
     display: inline-block;
     transition: .2s linear;
@@ -263,13 +228,13 @@ export default class extends Vue {
   }
   .loadimg {
     background-image: url('../../../assets/images/common_loading_up@2x.png');
-    width: rem-calc(48, 360);
-    height: rem-calc(48, 360);
+    width: rem-calc(48);
+    height: rem-calc(48);
     background-size: cover;
     transform: scale(0.6);
   }
   .loading-circle {
-    margin-right: rem-calc(10, 360);
+    margin-right: rem-calc(10);
     span.vux-spinner {
       stroke: #bdbdbd;
       fill: #bdbdbd;

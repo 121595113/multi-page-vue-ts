@@ -27,7 +27,7 @@ export default {
 <style lang="scss">
 .empty-component {
   text-align: center;
-  padding-top: rem-calc(60, 360);
+  padding-top: rem-calc(60);
   position: absolute;
   top: 1.6rem;
   bottom: 0;
@@ -35,14 +35,14 @@ export default {
   right: 0;
   background: #f6f6f6;
   img {
-    width: rem-calc(140, 360);
+    width: rem-calc(140);
   }
   .text {
     p:first-child {
-      margin-top: rem-calc(20, 360);
+      margin-top: rem-calc(20);
     }
     p {
-      font-size: rem-calc(16, 360);
+      font-size: rem-calc(16);
       color: rgba(0, 0, 0, 0.50);
     }
   }

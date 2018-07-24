@@ -16,3 +16,9 @@ body {
 .van-icon-arrow::before{
   color: #919498;
 }
+
+.van-nav-bar{
+  &:after{
+    display: none;
+  }
+}

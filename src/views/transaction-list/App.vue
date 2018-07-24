@@ -2,7 +2,7 @@
   <div id="app">
     <van-nav-bar :title="title" left-arrow fixed @click-left="onBack" />
     <router-view/>
-    <Empty v-show="isShowEmptyView" emptyType="TransactionListEmpty" tipText='<p>You do not have any transaction.</p>' />
+    <Empty v-show="isShowEmptyView" emptyType="TransactionListEmpty" tipText='<p>Anda tidak memiliki transaksi.</p>' />
     <GlobalLoading :showLoading="isShowLoading" />
   </div>
 </template>
@@ -54,4 +54,11 @@ export default class extends Vue {
 body {
   background: #f6f6f6;
 }
+</style>
+
+<style scoped lang="scss">
+  #app{
+    padding-top: 46px;
+    height: 100%;
+  }
 </style>
