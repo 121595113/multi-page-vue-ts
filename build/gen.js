@@ -1,13 +1,14 @@
 'use strict'
-// require modules
 var fs = require('fs');
 var archiver = require('archiver');
 var path = require('path')
+var child_process = require('child_process');
+var exeq = require('exeq');
+
 // create a file to stream archive data to.
 var dirPath = path.resolve(__dirname, '..') + '/www/'
 var iosDesPath = path.resolve(__dirname, '..') + '/ios-package/'
 var androidDesPath = path.resolve(__dirname, '..') + '/android-package/'
-var child_process = require('child_process');
 
 if(!fs.existsSync(iosDesPath)){//不存在就创建一个
     fs.mkdirSync(iosDesPath);
@@ -44,7 +45,7 @@ archive.on('warning', function(err) {
     throw err;
   }
 });
- 
+
 // good practice to catch this error explicitly
 archive.on('error', function(err) {
   throw err;
@@ -60,7 +61,7 @@ archive.finalize();
 
 var srcPath = androidDesPath + 'orienteVue/assets/www/';
 var aarDirPath = androidDesPath + 'orienteVue';
-const ls = child_process.spawnSync('cp', ['-r', dirPath, srcPath]);	
+const ls = child_process.spawnSync('cp', ['-r', dirPath, srcPath]);
 
 // ls.stdout.on('data', (data) => {
 //   console.log(`stdout: ${data}`);
@@ -110,3 +111,15 @@ aarArchive.directory(aarDirPath,false);
 // finalize the archive (ie we are done appending files but streams have to finish yet)
 // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
 aarArchive.finalize();
+
+// iOS增加OrienteVue.json文件
+exeq([
+  `cp ${dirPath}/package.json ${iosDesPath}/assets`,
+  `mv ${iosDesPath}/assets/package.json ${iosDesPath}/assets/OrienteVue.json`
+])
+  .then(() => {
+    console.log('add OrienteVue.json done');
+  })
+  .catch(err => {
+    console.log('add OrienteVue.json error');
+  })

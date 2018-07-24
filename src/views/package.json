@@ -1,0 +1,12 @@
+{
+  "name": "oriente-vue",
+  "version": "1.2.1.2",
+  "description": "Oriente hybrid project",
+  "author": "oriente hybrid",
+  "license": "ISC",
+  "router-mapping": {
+    "mainPage": "main-page",
+    "notificationCenter": "notification-center",
+    "transactionList": "transaction-list"
+  }
+}
