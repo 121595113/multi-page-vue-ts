@@ -2,7 +2,7 @@
   "mode": "prod",
   "groupId": "com.finmas.hybrid",
   "artifactId": "oriente-hybrid",
-  "version": "1.2.2.0",
+  "version": "1.2.1.0",
   "arrFilePath": "/Users/khanfan/workspace/oriente/fe-id-finmas/android-package/oriente-vue.aar",
   "zipFilePath": "/Users/khanfan/workspace/oriente/fe-id-finmas/ios-package/assets/OrienteVue.zip",
   "nexusUrl": "http://180.167.112.162:8082/repository/maven-releases/",
