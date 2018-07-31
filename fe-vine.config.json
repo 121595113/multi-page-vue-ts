@@ -1,14 +1,17 @@
 {
-  "mode": "prod",
-  "groupId": "com.finmas.hybrid",
-  "artifactId": "oriente-hybrid",
-  "version": "1.2.1.0",
-  "arrFilePath": "/Users/khanfan/workspace/oriente/fe-id-finmas/android-package/oriente-vue.aar",
-  "zipFilePath": "/Users/khanfan/workspace/oriente/fe-id-finmas/ios-package/assets/OrienteVue.zip",
-  "nexusUrl": "http://180.167.112.162:8082/repository/maven-releases/",
-  "repositoryId": "releases",
-  "userName": "dev",
-  "password": "PushOriente0326",
-  "feArchiveRootPath": "/Users/khanfan/workspace/oriente/fe-finmas-h5-archive/",
-  "feArchiveZipPath": "/Users/khanfan/workspace/oriente/fe-finmas-h5-archive/OrienteZip/Assets"
+  "version": "1.2.1.5",
+  "android": {
+    "mode": "prod",
+    "arrFilePath": "./android-package/oriente-vue.aar",
+    "groupId": "com.finmas.hybrid",
+    "artifactId": "oriente-hybrid",
+    "nexusUrl": "http://180.167.112.162:8082/repository/maven-releases/",
+    "repositoryId": "releases",
+    "userName": "dev",
+    "password": "PushOriente0326"
+  },
+  "ios": {
+    "zipFileRelativePath": "./ios-package/assets/OrienteVue.zip",
+    "h5ArchiveRemoteRepo": "ssh://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/fe-finmas-h5-archive"
+  }
 }
