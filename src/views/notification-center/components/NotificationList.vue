@@ -66,9 +66,13 @@ export default class extends Vue {
   private notificationList: any = [];
   private lastMsgId: string = '-1';
   private pageSize: number = 20;
+  private isFirstPage: boolean = true;
 
   public handleBottomChange(status: string) {
     this.bottomStatus = status;
+    if (this.bottomStatus === 'drop') {
+      this.isFirstPage = false;
+    }
   }
   public loadBottom() {
     this.fetchData();
@@ -97,15 +101,18 @@ export default class extends Vue {
         this.isRequest = true;
         (this as any).setLoadingStatus(false);
         if (result.length > 0) {
-          result.forEach((item: any) => {
-            this.notificationList.push({
+          const clientHeight = document.documentElement.clientHeight;
+          this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
+          const arrList = result.map((item: any) => {
+            return {
               notificationId: item.notificationId,
               title: item.title,
               template: item.template,
               effectiveAt: item.effectiveAt,
-            });
+            };
           });
           this.lastMsgId = result[result.length - 1] && result[result.length - 1].notificationId;
+          this.notificationList = this.notificationList.concat(arrList);
           (this.$refs.loadmore as any).onBottomLoaded();
           if (result.length < this.pageSize) {
             // last page
@@ -124,8 +131,6 @@ export default class extends Vue {
       });
   }
   private mounted() {
-    const clientHeight = document.documentElement.clientHeight;
-    this.wrapperHeight = clientHeight - (this.$refs.wrapper as any).getBoundingClientRect().top;
     (this as any).setTitle('Pemberitahuan');
 
     cordova = (window as any).cordova;
@@ -136,6 +141,13 @@ export default class extends Vue {
       });
     } else {
       this.fetchData();
+    }
+  }
+  private updated() {
+    if (this.isFirstPage) {
+      this.$nextTick(() => {
+        (this.$refs.wrapper as any).scrollTo(0, 0);
+      });
     }
   }
 }

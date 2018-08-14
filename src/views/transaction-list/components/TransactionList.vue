@@ -93,6 +93,7 @@ export default class extends Vue {
             };
           });
           if (from === 'top') {
+            this.transactionList.length = 0;
             this.transactionList = arrList;
             (this.$refs.loadmore as any).onTopLoaded();
           } else {
@@ -124,7 +125,6 @@ export default class extends Vue {
     this.$nextTick(() => {
       this.pageNo = 0;
       this.allLoaded = false;
-      this.transactionList.length = 0;
       this.fetchData('top');
     });
   }
@@ -169,6 +169,7 @@ export default class extends Vue {
     list-style: none;
   }
   .cell {
+    overflow: hidden;
     display: flex;
     align-items: center;
     min-height: rem-calc(116);

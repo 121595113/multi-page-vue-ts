@@ -291,7 +291,7 @@ export default class extends Vue {
 
 .help {
   width: 92%;
-  margin: 0 auto 5% auto;
+  margin: 0 auto 10% auto;
   overflow: hidden;
   position: relative;
 }
